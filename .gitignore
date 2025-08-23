@@ -70,3 +70,9 @@ Desktop.ini
 *.log
 *.tmp
 *.swp
+
+
+
+
+# Ignore Smart Environment folder
+.smart-env
