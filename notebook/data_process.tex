@@ -1,0 +1,2547 @@
+\documentclass[11pt]{article}
+
+    \usepackage{ctex}
+    % 如果上面那行加了还不行，考虑加上显式字体设置（不带sffamily和ttfamily，只设置mainfont）
+    \ctexset{
+        % 主字体，用于正文
+        mainfont = 'Source Han Serif SC', % 例如：思源宋体
+        % 无衬线字体，用于标题、粗体等
+        sansfont = 'Source Han Sans SC', % 例如：思源黑体
+        % 等宽字体，用于代码
+        monofont = 'Consolas' % 或 'Consolas', 'Courier New' 等
+    }
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{data\_process}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+
+    \title{Data Process on Python}
+    \author{\_达\_\_}% 作者名字，注意下划线要转义
+    \date{\today}
+    \maketitle
+    
+    
+    \section{概述}\label{ux6982ux8ff0}
+
+\begin{itemize}
+\tightlist
+\item
+  此文件拿到\texttt{data\_combine.ipynb}合并五年数据后的结果，进行数据清洗和数据分析
+\item
+  数据清洗简单说就是去掉不需要的数据，把数据统一格式，便于后续分析
+\item
+  数据经过此文件处理后，就会导入到\texttt{VOSviewer}中进行下一步分析
+\end{itemize}
+
+    \subsection{前期准备}\label{ux524dux671fux51c6ux5907}
+
+    \subsubsection{导入所有需要的Python库}\label{ux5bfcux5165ux6240ux6709ux9700ux8981ux7684pythonux5e93}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 标准库 imports}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{os}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{glob}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{collections}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{Counter}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{itertools}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{combinations}
+
+\PY{c+c1}{\PYZsh{} 数据处理与分析}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{pandas}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{pd}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}  \PY{c+c1}{\PYZsh{} 建议添加，pandas的常用搭档}
+
+\PY{c+c1}{\PYZsh{} 网络分析与图论}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{networkx}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nx}
+
+\PY{c+c1}{\PYZsh{} 数据可视化}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{seaborn}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{sns}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsubsection{检查依赖库的版本信息}\label{ux68c0ux67e5ux4f9dux8d56ux5e93ux7684ux7248ux672cux4fe1ux606f}
+
+\begin{itemize}
+\tightlist
+\item
+  确保多平台正确、稳定运行
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{70}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{mpl}  \PY{c+c1}{\PYZsh{} 需要导入matplotlib本身}
+
+\PY{c+c1}{\PYZsh{} 检查版本信息，确保兼容性}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{版本信息:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{pandas: }\PY{l+s+si}{\PYZob{}}\PY{n}{pd}\PY{o}{.}\PY{n}{\PYZus{}\PYZus{}version\PYZus{}\PYZus{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{numpy: }\PY{l+s+si}{\PYZob{}}\PY{n}{np}\PY{o}{.}\PY{n}{\PYZus{}\PYZus{}version\PYZus{}\PYZus{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{networkx: }\PY{l+s+si}{\PYZob{}}\PY{n}{nx}\PY{o}{.}\PY{n}{\PYZus{}\PYZus{}version\PYZus{}\PYZus{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{matplotlib: }\PY{l+s+si}{\PYZob{}}\PY{n}{mpl}\PY{o}{.}\PY{n}{\PYZus{}\PYZus{}version\PYZus{}\PYZus{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{seaborn: }\PY{l+s+si}{\PYZob{}}\PY{n}{sns}\PY{o}{.}\PY{n}{\PYZus{}\PYZus{}version\PYZus{}\PYZus{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+版本信息:
+pandas: 2.2.3
+numpy: 2.0.2
+networkx: 3.4.2
+matplotlib: 3.9.2
+seaborn: 0.13.2
+    \end{Verbatim}
+
+    \subsubsection{全局定义医学``停用词''}\label{ux5168ux5c40ux5b9aux4e49ux533bux5b66ux505cux7528ux8bcd}
+
+\begin{itemize}
+\tightlist
+\item
+  为什么全局定义？
+
+  \begin{itemize}
+  \tightlist
+  \item
+    因为后面好多分析都需要使用到，避免重复、多次定义
+  \end{itemize}
+\item
+  什么是停用词？
+
+  \begin{itemize}
+  \tightlist
+  \item
+    因为统计关键词的算法是计算出现词频，所以会有很多出现次数很多的词汇并不是我们想要的词汇，
+  \item
+    比如说统计英语卷子的词汇想要得到核心词汇，前几名一定不是你想要的，一般是''of'',``I'',``the''等常用词
+  \end{itemize}
+\item
+  此表按照领域分类
+
+  \begin{itemize}
+  \tightlist
+  \item
+    如果需要关注某些领域，可以从词表中去掉这些词汇，加入词汇分析，
+  \item
+    具体做法是注释掉这些词汇，就可以，便于再次加入
+  \end{itemize}
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} =====================================================================}
+\PY{c+c1}{\PYZsh{} 首先，定义我们的“领域停用词”列表}
+\PY{c+c1}{\PYZsh{} =====================================================================}
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{停用词主要用于过滤掉那些过于通用、频繁出现但对具体研究领域没有实际意义的关键词。}
+\PY{l+s+sd}{这些词汇往往是描述性或背景性的，不能帮助我们识别出真正的研究热点或趋势。}
+\PY{l+s+sd}{通过去除这些停用词，我们可以更清晰地聚焦于那些真正反映特定研究领域的关键词，从而提高分析的准确性和有效性。}
+\PY{l+s+sd}{同时，也根据需要注释掉某个领域的停用词，也就是会保留该词汇作为热点关键词。}
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{n}{domain\PYZus{}stop\PYZus{}words} \PY{o}{=} \PY{p}{[}
+    \PY{c+c1}{\PYZsh{} ============== 常见通用生物体/人群标签 ==============}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Humans}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Animals}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{human}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{animal}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Female}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{female}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Male}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{male}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Middle Aged}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}           \PY{c+c1}{\PYZsh{} 中年人}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Adult}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}                 \PY{c+c1}{\PYZsh{} 成年人}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Aged}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}                  \PY{c+c1}{\PYZsh{} 老年人}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Young Adult}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}           \PY{c+c1}{\PYZsh{} 青年人}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Adolescent}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}            \PY{c+c1}{\PYZsh{} 青少年}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Child}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}                 \PY{c+c1}{\PYZsh{} 儿童}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Aged, 80 and over}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}     \PY{c+c1}{\PYZsh{} 80岁及以上老年人}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Infant}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}                \PY{c+c1}{\PYZsh{} 婴儿}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Child, Preschool}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}      \PY{c+c1}{\PYZsh{} 学龄前儿童}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Infant, Newborn}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}       \PY{c+c1}{\PYZsh{} 新生儿}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{East Asian People}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}     \PY{c+c1}{\PYZsh{} 东亚人 (通常人群定义不作为热点)}
+
+    \PY{c+c1}{\PYZsh{} ============== 常见研究类型/报告形式/方法学标签 ==============}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Case Reports}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{patient}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{patients}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Retrospective Studies}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cross\PYZhy{}Sectional Studies}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Prospective Studies}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} 研究类型}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Surveys and Questionnaires}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} 调查问卷}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Case\PYZhy{}Control Studies}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}       \PY{c+c1}{\PYZsh{} 病例对照研究}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cohort Studies}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}             \PY{c+c1}{\PYZsh{} 队列研究}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Longitudinal Studies}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}       \PY{c+c1}{\PYZsh{} 纵向研究}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Follow\PYZhy{}Up Studies}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}          \PY{c+c1}{\PYZsh{} 随访研究}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Reproducibility of Results}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} 结果重现性 (科学研究的基本要求)}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Nutrition Surveys}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}          \PY{c+c1}{\PYZsh{} 营养调查 (属于方法学，而非具体研究内容)}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ROC Curve}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}                  \PY{c+c1}{\PYZsh{} ROC 曲线 (统计学评估工具)}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{meta\PYZhy{}analysis}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}              \PY{c+c1}{\PYZsh{} Meta分析 (统计学研究方法)}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Xenograft Model Antitumor Assays}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} 异种移植模型抗肿瘤试验 (具体的实验模型和方法)}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Proportional Hazards Models}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{c+c1}{\PYZsh{} 新增：比例风险模型 (统计学方法)}
+
+    \PY{c+c1}{\PYZsh{} ============== 常见资金/机构/地理位置标签 ==============}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Research Support, N.I.H., Extramural}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} 基金或机构标签}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{United States}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} 地理位置}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{United States/epidemiology}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} 地理位置/流行病学}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{China}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{China/epidemiology}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} 地理位置}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cities}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}                     \PY{c+c1}{\PYZsh{} 城市 (过于通用，通常只作为背景)}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{NHANES}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}                     \PY{c+c1}{\PYZsh{} 特定研究数据集}
+
+    \PY{c+c1}{\PYZsh{} ============== 常见研究对象/模型/工具标签 ==============}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Mice}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Rats}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}   \PY{c+c1}{\PYZsh{} 研究对象：小鼠、大鼠}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Mice, Inbred C57BL}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} C57BL近交系小鼠}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Rats, Sprague\PYZhy{}Dawley}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} 斯普拉格\PYZhy{}道利大鼠}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Mice, Nude}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}             \PY{c+c1}{\PYZsh{} 裸鼠}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mice, Inbred BALB C}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}    \PY{c+c1}{\PYZsh{} BALB/c 近交系小鼠}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mice, Knockout}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}         \PY{c+c1}{\PYZsh{} 基因敲除小鼠 (特定类型动物模型)}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cell Line, Tumor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} 肿瘤细胞系}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cells, Cultured}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}        \PY{c+c1}{\PYZsh{} 培养细胞}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cell Line}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}              \PY{c+c1}{\PYZsh{} 细胞系 (更通用的概念)}
+
+    \PY{c+c1}{\PYZsh{} ============== 常见、宽泛的研究指标/概念/过程标签 ==============}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Prognosis}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}            \PY{c+c1}{\PYZsh{} 研究结果：预后}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{prognosis}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}            \PY{c+c1}{\PYZsh{} 小写预后}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Risk Factors}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}         \PY{c+c1}{\PYZsh{} 研究概念：危险因素}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Treatment Outcome}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}    \PY{c+c1}{\PYZsh{} 研究结果：治疗结果}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Incidence}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}            \PY{c+c1}{\PYZsh{} 流行病学指标：发病率}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Prevalence}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}           \PY{c+c1}{\PYZsh{} 流行病学指标：患病率}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pregnancy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} 如果是妇产科，可能需要去掉}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Apoptosis}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} 细胞凋亡（如果其细分如 \PYZdq{}/drug effects\PYZdq{} 或 \PYZdq{}/genetics\PYZdq{} 更重要，则可作为停用词）}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{apoptosis}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} 小写细胞凋亡}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Disease Models, Animal}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} 动物疾病模型（通用概念）}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Signal Transduction}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}    \PY{c+c1}{\PYZsh{} 信号转导（如果其细分如 \PYZdq{}/drug effects\PYZdq{} 更重要，则可作为停用词）}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cell Proliferation}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}     \PY{c+c1}{\PYZsh{} 细胞增殖（如果其细分如 \PYZdq{}/genetics\PYZdq{} 或 \PYZdq{}/drug effects\PYZdq{} 更重要，则可作为停用词）}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Inflammation}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}           \PY{c+c1}{\PYZsh{} 炎症（作为非常宽泛的病理过程，如果想聚焦更具体的，可考虑停用）}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{inflammation}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}           \PY{c+c1}{\PYZsh{} 小写炎症}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Disease Progression}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}    \PY{c+c1}{\PYZsh{} 疾病进展 (通用性质描述)}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Time Factors}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}           \PY{c+c1}{\PYZsh{} 时间因素 (过于泛化)}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Risk Assessment}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}        \PY{c+c1}{\PYZsh{} 风险评估 (通用管理概念)}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Quality of Life}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}        \PY{c+c1}{\PYZsh{} 生活质量 (通用健康结局指标)}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Temperature}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}            \PY{c+c1}{\PYZsh{} 温度 (除非特定领域才有意义)}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{body mass index}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}        \PY{c+c1}{\PYZsh{} 身体质量指数}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Body Mass Index}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}        \PY{c+c1}{\PYZsh{} 身体质量指数}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{oxidative stress}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}       \PY{c+c1}{\PYZsh{} 小写氧化应激 (保留大写形式为热点)}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Genotype}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}               \PY{c+c1}{\PYZsh{} 基因型 (基础概念)}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Catalysis}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}              \PY{c+c1}{\PYZsh{} 催化 (基础概念)}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Phenotype}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}              \PY{c+c1}{\PYZsh{} 表型 (基础概念)}
+
+    \PY{c+c1}{\PYZsh{} ============== 在此列表中处理大小写不一致的词汇 ==============}
+    \PY{c+c1}{\PYZsh{} 这些词汇我们会保留其有大写或更具体形式在后续分析中，此处只为处理小写重复}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{machine learning}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{immunotherapy}\PY{l+s+s2}{\PYZdq{}}
+\PY{p}{]}
+\PY{c+c1}{\PYZsh{} 你可以根据你的数据不断完善这个列表！}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{读取数据文件，并且查看数据基本信息}\label{ux8bfbux53d6ux6570ux636eux6587ux4ef6ux5e76ux4e14ux67e5ux770bux6570ux636eux57faux672cux4fe1ux606f}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{71}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 定义数据文件路径}
+\PY{n}{processed\PYZus{}data\PYZus{}path} \PY{o}{=} \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{os}\PY{o}{.}\PY{n}{getcwd}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{..}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{processed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 读取数据文件}
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{processed\PYZus{}data\PYZus{}path}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{zotero\PYZus{}data\PYZus{}combined.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 查看数据的信息}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 25105 entries, 0 to 25104
+Data columns (total 87 columns):
+ \#   Column                Non-Null Count  Dtype
+---  ------                --------------  -----
+ 0   Key                   25105 non-null  object
+ 1   Item Type             25105 non-null  object
+ 2   Publication Year      25105 non-null  int64
+ 3   Author                25105 non-null  object
+ 4   Title                 25105 non-null  object
+ 5   Publication Title     25064 non-null  object
+ 6   ISBN                  0 non-null      float64
+ 7   ISSN                  25063 non-null  object
+ 8   DOI                   24969 non-null  object
+ 9   Url                   0 non-null      float64
+ 10  Abstract Note         24183 non-null  object
+ 11  Date                  25105 non-null  object
+ 12  Date Added            25105 non-null  object
+ 13  Date Modified         25105 non-null  object
+ 14  Access Date           0 non-null      float64
+ 15  Pages                 22971 non-null  object
+ 16  Num Pages             0 non-null      float64
+ 17  Issue                 17668 non-null  object
+ 18  Volume                24594 non-null  object
+ 19  Number Of Volumes     0 non-null      float64
+ 20  Journal Abbreviation  25064 non-null  object
+ 21  Short Title           0 non-null      float64
+ 22  Series                0 non-null      float64
+ 23  Series Number         0 non-null      float64
+ 24  Series Text           0 non-null      float64
+ 25  Series Title          0 non-null      float64
+ 26  Publisher             0 non-null      float64
+ 27  Place                 41 non-null     object
+ 28  Language              25105 non-null  object
+ 29  Rights                17986 non-null  object
+ 30  Type                  0 non-null      float64
+ 31  Archive               0 non-null      float64
+ 32  Archive Location      0 non-null      float64
+ 33  Library Catalog       0 non-null      float64
+ 34  Call Number           0 non-null      float64
+ 35  Extra                 25105 non-null  object
+ 36  Notes                 0 non-null      float64
+ 37  File Attachments      0 non-null      float64
+ 38  Link Attachments      0 non-null      float64
+ 39  Manual Tags           22640 non-null  object
+ 40  Automatic Tags        0 non-null      float64
+ 41  Editor                0 non-null      float64
+ 42  Series Editor         0 non-null      float64
+ 43  Translator            0 non-null      float64
+ 44  Contributor           0 non-null      float64
+ 45  Attorney Agent        0 non-null      float64
+ 46  Book Author           0 non-null      float64
+ 47  Cast Member           0 non-null      float64
+ 48  Commenter             0 non-null      float64
+ 49  Composer              0 non-null      float64
+ 50  Cosponsor             0 non-null      float64
+ 51  Counsel               0 non-null      float64
+ 52  Interviewer           0 non-null      float64
+ 53  Producer              0 non-null      float64
+ 54  Recipient             0 non-null      float64
+ 55  Reviewed Author       0 non-null      float64
+ 56  Scriptwriter          0 non-null      float64
+ 57  Words By              0 non-null      float64
+ 58  Guest                 0 non-null      float64
+ 59  Number                0 non-null      float64
+ 60  Edition               0 non-null      float64
+ 61  Running Time          0 non-null      float64
+ 62  Scale                 0 non-null      float64
+ 63  Medium                0 non-null      float64
+ 64  Artwork Size          0 non-null      float64
+ 65  Filing Date           0 non-null      float64
+ 66  Application Number    0 non-null      float64
+ 67  Assignee              0 non-null      float64
+ 68  Issuing Authority     0 non-null      float64
+ 69  Country               0 non-null      float64
+ 70  Meeting Name          0 non-null      float64
+ 71  Conference Name       0 non-null      float64
+ 72  Court                 0 non-null      float64
+ 73  References            0 non-null      float64
+ 74  Reporter              0 non-null      float64
+ 75  Legal Status          0 non-null      float64
+ 76  Priority Numbers      0 non-null      float64
+ 77  Programming Language  0 non-null      float64
+ 78  Version               0 non-null      float64
+ 79  System                0 non-null      float64
+ 80  Code                  0 non-null      float64
+ 81  Code Number           0 non-null      float64
+ 82  Section               0 non-null      float64
+ 83  Session               0 non-null      float64
+ 84  Committee             0 non-null      float64
+ 85  History               0 non-null      float64
+ 86  Legislative Body      0 non-null      float64
+dtypes: float64(66), int64(1), object(20)
+memory usage: 16.7+ MB
+None
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+C:\textbackslash{}Users\textbackslash{}tonyx\textbackslash{}AppData\textbackslash{}Local\textbackslash{}Temp\textbackslash{}ipykernel\_89676\textbackslash{}2082748027.py:4: DtypeWarning:
+Columns (18) have mixed types. Specify dtype option on import or set
+low\_memory=False.
+  df = pd.read\_csv(os.path.join(processed\_data\_path,
+'zotero\_data\_combined.csv'))
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{72}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 查看数据的列名}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{columns}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Index(['Key', 'Item Type', 'Publication Year', 'Author', 'Title',
+       'Publication Title', 'ISBN', 'ISSN', 'DOI', 'Url', 'Abstract Note',
+       'Date', 'Date Added', 'Date Modified', 'Access Date', 'Pages',
+       'Num Pages', 'Issue', 'Volume', 'Number Of Volumes',
+       'Journal Abbreviation', 'Short Title', 'Series', 'Series Number',
+       'Series Text', 'Series Title', 'Publisher', 'Place', 'Language',
+       'Rights', 'Type', 'Archive', 'Archive Location', 'Library Catalog',
+       'Call Number', 'Extra', 'Notes', 'File Attachments', 'Link Attachments',
+       'Manual Tags', 'Automatic Tags', 'Editor', 'Series Editor',
+       'Translator', 'Contributor', 'Attorney Agent', 'Book Author',
+       'Cast Member', 'Commenter', 'Composer', 'Cosponsor', 'Counsel',
+       'Interviewer', 'Producer', 'Recipient', 'Reviewed Author',
+       'Scriptwriter', 'Words By', 'Guest', 'Number', 'Edition',
+       'Running Time', 'Scale', 'Medium', 'Artwork Size', 'Filing Date',
+       'Application Number', 'Assignee', 'Issuing Authority', 'Country',
+       'Meeting Name', 'Conference Name', 'Court', 'References', 'Reporter',
+       'Legal Status', 'Priority Numbers', 'Programming Language', 'Version',
+       'System', 'Code', 'Code Number', 'Section', 'Session', 'Committee',
+       'History', 'Legislative Body'],
+      dtype='object')
+    \end{Verbatim}
+
+    \subsection{第一步：数据``瘦身''，修改数据结构，删去不需要的列}\label{ux7b2cux4e00ux6b65ux6570ux636eux7626ux8eabux4feeux6539ux6570ux636eux7ed3ux6784ux5220ux53bbux4e0dux9700ux8981ux7684ux5217}
+
+    根据我们的分析目标，以下这些列通常是最有价值的。我们先挑出它们：
+
+\begin{itemize}
+\tightlist
+\item
+  Author: 作者信息，核心中的核心。
+\item
+  Title: 文章标题。
+\item
+  Publication Title: 发表的期刊或会议名称。
+\item
+  Publication Year: 发表年份，用于分析趋势。
+\item
+  DOI: 文章的唯一数字标识符，用于精确去重。
+\item
+  Abstract Note: 文章摘要，可以用于文本分析。
+\item
+  Manual Tags / Automatic Tags: 关键词，用于分析研究热点。
+\item
+  Pages: 页码。
+\item
+  Volume: 卷。
+\item
+  Issue: 期。
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 检查是否包含所有需要的列}
+\PY{c+c1}{\PYZsh{} 定义需要的列}
+\PY{n}{required\PYZus{}columns} \PY{o}{=} \PY{p}{[}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Author}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Title}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Publication Title}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Publication Year}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{DOI}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Abstract Note}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Manual Tags}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Automatic Tags}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Pages}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Volume}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Issue}\PY{l+s+s2}{\PYZdq{}}
+\PY{p}{]}
+\PY{c+c1}{\PYZsh{} 用于存储缺失列的列表}
+\PY{n}{missing\PYZus{}columns} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{c+c1}{\PYZsh{} 遍历所有需要的列，检查它们是否存在于 DataFrame 的列中}
+\PY{k}{for} \PY{n}{col} \PY{o+ow}{in} \PY{n}{required\PYZus{}columns}\PY{p}{:}
+    \PY{k}{if} \PY{n}{col} \PY{o+ow}{not} \PY{o+ow}{in} \PY{n}{df}\PY{o}{.}\PY{n}{columns}\PY{p}{:}
+        \PY{n}{missing\PYZus{}columns}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{col}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 输出结果}
+\PY{k}{if} \PY{n}{missing\PYZus{}columns}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{DataFrame中缺失以下列：}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{for} \PY{n}{col} \PY{o+ow}{in} \PY{n}{missing\PYZus{}columns}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{} }\PY{l+s+si}{\PYZob{}}\PY{n}{col}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{else}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{DataFrame中存在所有必需的列。}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+DataFrame中存在所有必需的列。
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{38}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 定义我们要保留的列和它们的新名字}
+\PY{c+c1}{\PYZsh{} 这是一个字典，key是原始列名，value是我们的新列名}
+\PY{n}{columns\PYZus{}to\PYZus{}keep} \PY{o}{=} \PY{p}{\PYZob{}}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Author}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{authors}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Title}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{title}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Publication Title}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{journal}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Publication Year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DOI}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{doi}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Abstract Note}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{abstract}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Manual Tags}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{manual\PYZus{}tags}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Automatic Tags}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{auto\PYZus{}tags}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pages}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pages}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Volume}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{volume}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Issue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{issue}\PY{l+s+s1}{\PYZsq{}}
+\PY{p}{\PYZcb{}}
+\PY{c+c1}{\PYZsh{} 从原始DataFrame中只选择我们需要的列}
+\PY{c+c1}{\PYZsh{} 注意：df[list(columns\PYZus{}to\PYZus{}keep.keys())] 会选择出所有我们定义好的原始列}
+\PY{n}{df\PYZus{}clean} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{n+nb}{list}\PY{p}{(}\PY{n}{columns\PYZus{}to\PYZus{}keep}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{]}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 对选出的新DataFrame进行重命名}
+\PY{n}{df\PYZus{}clean} \PY{o}{=} \PY{n}{df\PYZus{}clean}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{n}{columns\PYZus{}to\PYZus{}keep}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 验证我们的成果 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{清洗后的数据信息：}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{df\PYZus{}clean}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{清洗后的数据前5行预览：}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df\PYZus{}clean}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+清洗后的数据信息：
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 25105 entries, 0 to 25104
+Data columns (total 11 columns):
+ \#   Column       Non-Null Count  Dtype
+---  ------       --------------  -----
+ 0   authors      25105 non-null  object
+ 1   title        25105 non-null  object
+ 2   journal      25064 non-null  object
+ 3   year         25105 non-null  int64
+ 4   doi          24969 non-null  object
+ 5   abstract     24183 non-null  object
+ 6   manual\_tags  22640 non-null  object
+ 7   auto\_tags    0 non-null      float64
+ 8   pages        22971 non-null  object
+ 9   volume       24594 non-null  object
+ 10  issue        17668 non-null  object
+dtypes: float64(1), int64(1), object(9)
+memory usage: 2.1+ MB
+
+清洗后的数据前5行预览：
+                                             authors  \textbackslash{}
+0  Sun, Lei; Wang, Hua; Yu, Shanshan; Zhang, Lin;{\ldots}
+1                Zhou, Lina; Ma, Xiancang; Wang, Wei
+2  Jin, Xuting; Ren, Jiajia; Li, Ruohan; Gao, Ya;{\ldots}
+3  Feng, Wei; Wang, Jian; Yan, Xin; Zhang, Qianqi{\ldots}
+4  Shao, Can; Wang, Xiaomeng; Ma, Qingyan; Zhao, {\ldots}
+
+                                               title  \textbackslash{}
+0  Herceptin induces ferroptosis and mitochondria{\ldots}
+1  Relationship between Cognitive Performance and{\ldots}
+2  Global burden of upper respiratory infections {\ldots}
+3  ERK/Drp1-dependent mitochondrial fission contr{\ldots}
+4  Analysis of risk factors of non-suicidal self-{\ldots}
+
+                                       journal  year  \textbackslash{}
+0  International journal of molecular medicine  2022
+1               Journal of affective disorders  2021
+2                            EClinicalMedicine  2021
+3                           Cell proliferation  2021
+4                Annals of palliative medicine  2021
+
+                            doi  \textbackslash{}
+0        10.3892/ijmm.2021.5072
+1     10.1016/j.jad.2020.12.059
+2  10.1016/j.eclinm.2021.100986
+3             10.1111/cpr.13048
+4          10.21037/apm-21-1951
+
+                                            abstract  \textbackslash{}
+0  Ferroptosis has been previously implicated in {\ldots}
+1  BACKGROUND: In China, an increasing number of {\ldots}
+2  BACKGROUND: Upper respiratory infections (URIs{\ldots}
+3  OBJECTIVES: High-mobility group box-1 (HMGB1) {\ldots}
+4  BACKGROUND: Adolescents are a high-risk group {\ldots}
+
+                                         manual\_tags  auto\_tags      pages  \textbackslash{}
+0  Animals; Rats; Cell Line; mitochondrial dysfun{\ldots}        NaN         17
+1  Humans; Aged; Depression; China/epidemiology; {\ldots}        NaN    454-458
+2  Incidence; Epidemiology; Mortality; Global bur{\ldots}        NaN     100986
+3  Male; Animals; Rats; Rats, Sprague-Dawley; Cel{\ldots}        NaN     e13048
+4  Adolescent; Child; Female; Humans; Risk Factor{\ldots}        NaN  9607-9613
+
+  volume issue
+0     49     2
+1    281   NaN
+2     37   NaN
+3     54     6
+4     10     9
+    \end{Verbatim}
+
+    \subsection{第二步：处理缺失值和重复项}\label{ux7b2cux4e8cux6b65ux5904ux7406ux7f3aux5931ux503cux548cux91cdux590dux9879}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 根据info()输出的信息发现：auto\PYZus{}tags列完全为空，因此我们决定丢弃这一列}
+\PY{c+c1}{\PYZsh{} 丢弃 \PYZsq{}auto\PYZus{}tags\PYZsq{} 列}
+\PY{c+c1}{\PYZsh{} inplace=True 表示直接在原始的 df\PYZus{}clean 上修改，而不是返回一个新DataFrame}
+\PY{n}{df\PYZus{}clean}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{auto\PYZus{}tags}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{已丢弃 }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{auto\PYZus{}tags}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{ 列。}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+已丢弃 'auto\_tags' 列。
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{40}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 从 info() 看出，journal, doi, abstract, manual\PYZus{}tags 等列都有缺失值。对于这些本应是字符串的列，最好的处理方法是 用一个空字符串 \PYZsq{}\PYZsq{} 来填充 NaN。}
+\PY{c+c1}{\PYZsh{} 找出所有数据类型为 \PYZsq{}object\PYZsq{} (通常是字符串) 的列}
+\PY{n}{string\PYZus{}columns} \PY{o}{=} \PY{n}{df\PYZus{}clean}\PY{o}{.}\PY{n}{select\PYZus{}dtypes}\PY{p}{(}\PY{n}{include}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{columns}
+\PY{c+c1}{\PYZsh{} 使用空字符串 \PYZsq{}\PYZsq{} 填充这些列中的所有 NaN 值}
+\PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{n}{string\PYZus{}columns}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{n}{string\PYZus{}columns}\PY{p}{]}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 验证我们的成果 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{填充NaN后的数据信息：}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{df\PYZus{}clean}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+填充NaN后的数据信息：
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 25105 entries, 0 to 25104
+Data columns (total 10 columns):
+ \#   Column       Non-Null Count  Dtype
+---  ------       --------------  -----
+ 0   authors      25105 non-null  object
+ 1   title        25105 non-null  object
+ 2   journal      25105 non-null  object
+ 3   year         25105 non-null  int64
+ 4   doi          25105 non-null  object
+ 5   abstract     25105 non-null  object
+ 6   manual\_tags  25105 non-null  object
+ 7   pages        25105 non-null  object
+ 8   volume       25105 non-null  object
+ 9   issue        25105 non-null  object
+dtypes: int64(1), object(9)
+memory usage: 1.9+ MB
+    \end{Verbatim}
+
+    核心步骤：处理重复项 这是至关重要的一步。我们通常使用 DOI (Digital
+Object Identifier) 作为论文的唯一身份证。
+
+但是这里有一个巨大的陷阱！ 我们刚刚把 NaN 的 doi 填充成了空字符串
+'\,`。如果你直接对 doi 列去重，所有 doi 为空字符串'\,'
+的记录都会被认为是``重复''的，最终只会被保留一条，这将误删大量数据！
+
+所以，我们必须采用更精确的策略：
+
+有DOI的：按 doi 去重。 没有DOI的：按其他信息（如 title + year +
+authors）去重。
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{41}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 首先，报告一下有多少条记录的DOI是缺失的（现在是空字符串）}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{原始数据中，DOI为空的记录有 }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{doi}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{+w}{ }\PY{o}{==}\PY{+w}{ }\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ 条。}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+原始数据中，DOI为空的记录有 136 条。
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{42}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 1. 处理有DOI的记录}
+\PY{c+c1}{\PYZsh{}   \PYZhy{} isin([\PYZsq{}\PYZsq{}]) 是为了确保我们选中了空字符串}
+\PY{c+c1}{\PYZsh{}   \PYZhy{} \PYZti{} 符号是 \PYZdq{}取反\PYZdq{} 的意思，所以这里是选择 doi 不是空字符串的行}
+\PY{n}{df\PYZus{}has\PYZus{}doi} \PY{o}{=} \PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{o}{\PYZti{}}\PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{doi}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{isin}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{]}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\PY{n}{df\PYZus{}no\PYZus{}doi} \PY{o}{=} \PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{doi}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{isin}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{]}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 对有DOI的部分进行去重}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{去重前，有DOI的记录数: }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{df\PYZus{}has\PYZus{}doi}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{df\PYZus{}has\PYZus{}doi}\PY{o}{.}\PY{n}{drop\PYZus{}duplicates}\PY{p}{(}\PY{n}{subset}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{doi}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{keep}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{first}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{去重后，有DOI的记录数: }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{df\PYZus{}has\PYZus{}doi}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+去重前，有DOI的记录数: 24969
+去重后，有DOI的记录数: 22720
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{43}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 2. 处理没有DOI的记录}
+\PY{c+c1}{\PYZsh{}    对于没有DOI的，我们使用一个更严格的标准：标题、年份和作者列表都得一样才算重复}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{去重前，无DOI的记录数: }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{df\PYZus{}no\PYZus{}doi}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{df\PYZus{}no\PYZus{}doi}\PY{o}{.}\PY{n}{drop\PYZus{}duplicates}\PY{p}{(}\PY{n}{subset}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{title}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{authors}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{keep}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{first}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{去重后，无DOI的记录数: }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{df\PYZus{}no\PYZus{}doi}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+去重前，无DOI的记录数: 136
+去重后，无DOI的记录数: 134
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{44}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 3. 将处理好的两部分数据重新合并起来}
+\PY{n}{df\PYZus{}final} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{concat}\PY{p}{(}\PY{p}{[}\PY{n}{df\PYZus{}has\PYZus{}doi}\PY{p}{,} \PY{n}{df\PYZus{}no\PYZus{}doi}\PY{p}{]}\PY{p}{,} \PY{n}{ignore\PYZus{}index}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 最终验证 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{所有数据去重完成！最终剩余 }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{df\PYZus{}final}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ 条有效记录。}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{最终数据集信息：}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{df\PYZus{}final}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 现在，df\PYZus{}clean 可以被 df\PYZus{}final 覆盖，或者你后面一直使用 df\PYZus{}final}
+\PY{n}{df\PYZus{}clean} \PY{o}{=} \PY{n}{df\PYZus{}final}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+所有数据去重完成！最终剩余 22854 条有效记录。
+
+最终数据集信息：
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 22854 entries, 0 to 22853
+Data columns (total 10 columns):
+ \#   Column       Non-Null Count  Dtype
+---  ------       --------------  -----
+ 0   authors      22854 non-null  object
+ 1   title        22854 non-null  object
+ 2   journal      22854 non-null  object
+ 3   year         22854 non-null  int64
+ 4   doi          22854 non-null  object
+ 5   abstract     22854 non-null  object
+ 6   manual\_tags  22854 non-null  object
+ 7   pages        22854 non-null  object
+ 8   volume       22854 non-null  object
+ 9   issue        22854 non-null  object
+dtypes: int64(1), object(9)
+memory usage: 1.7+ MB
+    \end{Verbatim}
+
+    \subsection{第三步：规范化与解析作者信息}\label{ux7b2cux4e09ux6b65ux89c4ux8303ux5316ux4e0eux89e3ux6790ux4f5cux8005ux4fe1ux606f}
+
+    目标：将原始的、单一字符串格式的作者信息（如 ``Jin, Xuting; Ren, Jiajia;
+Li, Ruohan''），转换成一个程序可用的、标准化的作者列表（如 {[}`Jin X',
+`Ren J', `Li R'{]}）。
+
+    \begin{itemize}
+\tightlist
+\item
+  唯一性识别：不经过处理，``Jin, Xuting'' 和 ``Xuting Jin''
+  会被程序当成两个人。标准化后（如都变成 ``Jin
+  X''），我们才能准确地统计每个作者的发文数量。
+\item
+  网络分析基础：合作网络是基于作者的。我们需要一个干净的作者列表，才能知道哪些作者共同出现在一篇文章里，从而构建出合作关系。
+\item
+  可计算性：字符串是没法直接计算的，但列表可以。转换后，我们可以轻松计算每篇文章的作者数量，或者找出第一作者/通讯作者（如果信息可用）。
+\end{itemize}
+
+    我们将创建一个小函数，它的任务是接收一个作者名（如 ``Jin,
+Xuting''），然后返回一个标准格式（如 ``Jin X''）。这个标准格式（姓 +
+名首字母）在学术分析中非常通用和有效。
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{45}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{standardize\PYZus{}author\PYZus{}name}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    将单个作者姓名标准化为 \PYZsq{}Lastname F.\PYZsq{} 的格式。}
+\PY{l+s+sd}{    例如：\PYZsq{}Jin, Xuting\PYZsq{} \PYZhy{}\PYZgt{} \PYZsq{}Jin X\PYZsq{}}
+\PY{l+s+sd}{           \PYZsq{}Xuting Jin\PYZsq{} \PYZhy{}\PYZgt{} \PYZsq{}Jin X\PYZsq{}}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{name} \PY{o}{=} \PY{n}{name}\PY{o}{.}\PY{n}{strip}\PY{p}{(}\PY{p}{)}  \PY{c+c1}{\PYZsh{} 去除首尾的空格}
+    \PY{k}{if} \PY{o+ow}{not} \PY{n}{name}\PY{p}{:}
+        \PY{k}{return} \PY{k+kc}{None}  \PY{c+c1}{\PYZsh{} 如果是空字符串，返回None}
+
+    \PY{c+c1}{\PYZsh{} 情况1: \PYZsq{}Lastname, Firstname\PYZsq{} 格式}
+    \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{name}\PY{p}{:}
+        \PY{n}{parts} \PY{o}{=} \PY{n}{name}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)} \PY{c+c1}{\PYZsh{} 只分割一次}
+        \PY{n}{last\PYZus{}name} \PY{o}{=} \PY{n}{parts}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{strip}\PY{p}{(}\PY{p}{)}
+        \PY{n}{first\PYZus{}name} \PY{o}{=} \PY{n}{parts}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{strip}\PY{p}{(}\PY{p}{)}
+        \PY{k}{if} \PY{n}{first\PYZus{}name}\PY{p}{:}
+            \PY{k}{return} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{last\PYZus{}name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{n}{first\PYZus{}name}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}
+        \PY{k}{else}\PY{p}{:}
+            \PY{k}{return} \PY{n}{last\PYZus{}name} \PY{c+c1}{\PYZsh{} 只有姓的情况}
+    
+    \PY{c+c1}{\PYZsh{} 情况2: \PYZsq{}Firstname Lastname\PYZsq{} 格式}
+    \PY{k}{else}\PY{p}{:}
+        \PY{n}{parts} \PY{o}{=} \PY{n}{name}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{p}{)}
+        \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{parts}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mi}{1}\PY{p}{:}
+            \PY{n}{last\PYZus{}name} \PY{o}{=} \PY{n}{parts}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{strip}\PY{p}{(}\PY{p}{)}
+            \PY{n}{first\PYZus{}name} \PY{o}{=} \PY{n}{parts}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{strip}\PY{p}{(}\PY{p}{)}
+            \PY{k}{return} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{last\PYZus{}name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{n}{first\PYZus{}name}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}
+        \PY{k}{else}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} 只有一个词的名字 (比如一个机构名误入)}
+            \PY{k}{return} \PY{n}{name}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 测试一下我们的函数 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{Jin, Xuting}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{ \PYZhy{}\PYZgt{} }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{standardize\PYZus{}author\PYZus{}name}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Jin, Xuting}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{ Wang, Hua }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{ \PYZhy{}\PYZgt{} }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{standardize\PYZus{}author\PYZus{}name}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ Wang, Hua }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{Lina Zhou}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{   \PYZhy{}\PYZgt{} }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{standardize\PYZus{}author\PYZus{}name}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Lina Zhou}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{Elsevier}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{    \PYZhy{}\PYZgt{} }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{standardize\PYZus{}author\PYZus{}name}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Elsevier}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{} 也能处理单个词}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+'Jin, Xuting' -> 'Jin X'
+' Wang, Hua ' -> 'Wang H'
+'Lina Zhou'   -> 'Zhou L'
+'Elsevier'    -> 'Elsevier'
+    \end{Verbatim}
+
+    现在我们有了处理单个名字的工具，接下来就要把它应用到 authors
+列的每一个单元格上。每个单元格都是由分号 ; 连接的多个作者名。
+
+我们会创建一个新列，叫 authors\_list，来存放处理好的作者列表。
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{46}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} df\PYZus{}clean 是你上一步得到的最终DataFrame}
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{process\PYZus{}authors\PYZus{}string}\PY{p}{(}\PY{n}{authors\PYZus{}str}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    处理整个作者字符串，返回一个标准化的作者列表。}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k}{if} \PY{o+ow}{not} \PY{n}{authors\PYZus{}str} \PY{o+ow}{or} \PY{n}{pd}\PY{o}{.}\PY{n}{isna}\PY{p}{(}\PY{n}{authors\PYZus{}str}\PY{p}{)}\PY{p}{:}
+        \PY{k}{return} \PY{p}{[}\PY{p}{]} \PY{c+c1}{\PYZsh{} 如果是空字符串或NaN，返回空列表}
+
+    \PY{n}{authors\PYZus{}list\PYZus{}raw} \PY{o}{=} \PY{n}{authors\PYZus{}str}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{;}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} 对列表中的每个名字应用标准化函数}
+    \PY{n}{standardized\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{n}{standardize\PYZus{}author\PYZus{}name}\PY{p}{(}\PY{n}{name}\PY{p}{)} \PY{k}{for} \PY{n}{name} \PY{o+ow}{in} \PY{n}{authors\PYZus{}list\PYZus{}raw}\PY{p}{]}
+    
+    \PY{c+c1}{\PYZsh{} 过滤掉处理失败的 None 值}
+    \PY{k}{return} \PY{p}{[}\PY{n}{name} \PY{k}{for} \PY{n}{name} \PY{o+ow}{in} \PY{n}{standardized\PYZus{}list} \PY{k}{if} \PY{n}{name} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} 使用 .apply() 方法将这个函数应用到 \PYZsq{}authors\PYZsq{} 列的每一行}
+\PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{authors\PYZus{}list}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{authors}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{process\PYZus{}authors\PYZus{}string}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 验证我们的成果 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} 查看新创建的列和原始列的对比}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{作者信息处理前后对比：}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{authors}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{authors\PYZus{}list}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 检查一下某一行的数据}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{查看单行处理结果示例：}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{原始数据:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{df\PYZus{}clean}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{authors}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{处理后:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{df\PYZus{}clean}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{authors\PYZus{}list}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+作者信息处理前后对比：
+                                             authors  \textbackslash{}
+0  Sun, Lei; Wang, Hua; Yu, Shanshan; Zhang, Lin;{\ldots}
+1                Zhou, Lina; Ma, Xiancang; Wang, Wei
+2  Jin, Xuting; Ren, Jiajia; Li, Ruohan; Gao, Ya;{\ldots}
+3  Feng, Wei; Wang, Jian; Yan, Xin; Zhang, Qianqi{\ldots}
+4  Shao, Can; Wang, Xiaomeng; Ma, Qingyan; Zhao, {\ldots}
+
+                                        authors\_list
+0    [Sun L, Wang H, Yu S, Zhang L, Jiang J, Zhou Q]
+1                             [Zhou L, Ma X, Wang W]
+2  [Jin X, Ren J, Li R, Gao Y, Zhang H, Li J, Zha{\ldots}
+3  [Feng W, Wang J, Yan X, Zhang Q, Chai L, Wang {\ldots}
+4              [Shao C, Wang X, Ma Q, Zhao Y, Yun X]
+
+查看单行处理结果示例：
+原始数据: Sun, Lei; Wang, Hua; Yu, Shanshan; Zhang, Lin; Jiang, Jue; Zhou, Qi
+处理后: ['Sun L', 'Wang H', 'Yu S', 'Zhang L', 'Jiang J', 'Zhou Q']
+    \end{Verbatim}
+
+    \subsection{第四步：初步分析-统计高产作者}\label{ux7b2cux56dbux6b65ux521dux6b65ux5206ux6790-ux7edfux8ba1ux9ad8ux4ea7ux4f5cux8005}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{47}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} df\PYZus{}clean 是你上一步得到的 DataFrame}
+
+\PY{c+c1}{\PYZsh{} 使用 explode 将 authors\PYZus{}list 列中的每个列表展开成多行}
+\PY{c+c1}{\PYZsh{} 每一行现在只对应一个作者}
+\PY{n}{all\PYZus{}authors\PYZus{}series} \PY{o}{=} \PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{authors\PYZus{}list}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{explode}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 查看一下 explode 的效果 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} explode() 效果预览 \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{原始DataFrame的前两行 }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{authors\PYZus{}list}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{authors\PYZus{}list}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{explode() 之后的前10个元素:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{all\PYZus{}authors\PYZus{}series}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+--- explode() 效果预览 ---
+原始DataFrame的前两行 'authors\_list':
+0    [Sun L, Wang H, Yu S, Zhang L, Jiang J, Zhou Q]
+1                             [Zhou L, Ma X, Wang W]
+Name: authors\_list, dtype: object
+
+explode() 之后的前10个元素:
+0      Sun L
+0     Wang H
+0       Yu S
+0    Zhang L
+0    Jiang J
+0     Zhou Q
+1     Zhou L
+1       Ma X
+1     Wang W
+2      Jin X
+Name: authors\_list, dtype: object
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{48}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 使用 value\PYZus{}counts() 来统计每个独立作者出现的次数}
+\PY{n}{author\PYZus{}counts} \PY{o}{=} \PY{n}{all\PYZus{}authors\PYZus{}series}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 查看统计结果 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} 最高产作者 Top 20 \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{author\PYZus{}counts}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 将结果保存到一个新的 DataFrame 中，方便查看和后续使用}
+\PY{n}{df\PYZus{}author\PYZus{}productivity} \PY{o}{=} \PY{n}{author\PYZus{}counts}\PY{o}{.}\PY{n}{reset\PYZus{}index}\PY{p}{(}\PY{p}{)}
+\PY{n}{df\PYZus{}author\PYZus{}productivity}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{author}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{publication\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} 存为DataFrame，方便后续分析 \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df\PYZus{}author\PYZus{}productivity}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+
+--- 最高产作者 Top 20 ---
+authors\_list
+Zhang Y    2707
+Wang Y     2434
+Li Y       2044
+Wang J     1911
+Wang X     1847
+Zhang J    1660
+Li J       1653
+Liu Y      1532
+Li X       1521
+Zhang X    1384
+Zhang L    1293
+Wang Z     1183
+Liu J      1167
+Zhao Y     1080
+Wang H     1078
+Liu X      1052
+Li Z       1040
+Chen Y     1022
+Zhang H    1008
+Li H        973
+Name: count, dtype: int64
+
+
+--- 存为DataFrame，方便后续分析 ---
+    author  publication\_count
+0  Zhang Y               2707
+1   Wang Y               2434
+2     Li Y               2044
+3   Wang J               1911
+4   Wang X               1847
+    \end{Verbatim}
+
+    \subsection{第五步：分析研究热点-解析关键词}\label{ux7b2cux4e94ux6b65ux5206ux6790ux7814ux7a76ux70edux70b9-ux89e3ux6790ux5173ux952eux8bcd}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{49}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} df\PYZus{}clean 是我们一直在使用的 DataFrame}
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{process\PYZus{}tags\PYZus{}string}\PY{p}{(}\PY{n}{tags\PYZus{}str}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    处理关键词字符串，返回一个干净的关键词列表。}
+\PY{l+s+sd}{    例如：\PYZdq{}Tag A; Tag B \PYZdq{} \PYZhy{}\PYZgt{} [\PYZsq{}Tag A\PYZsq{}, \PYZsq{}Tag B\PYZsq{}]}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k}{if} \PY{o+ow}{not} \PY{n}{tags\PYZus{}str} \PY{o+ow}{or} \PY{n}{pd}\PY{o}{.}\PY{n}{isna}\PY{p}{(}\PY{n}{tags\PYZus{}str}\PY{p}{)}\PY{p}{:}
+        \PY{k}{return} \PY{p}{[}\PY{p}{]}
+
+    \PY{c+c1}{\PYZsh{} 按分号分割，并用列表推导式去除每个标签前后的空格}
+    \PY{n}{tags\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{n}{tag}\PY{o}{.}\PY{n}{strip}\PY{p}{(}\PY{p}{)} \PY{k}{for} \PY{n}{tag} \PY{o+ow}{in} \PY{n}{tags\PYZus{}str}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{;}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{]}
+    
+    \PY{c+c1}{\PYZsh{} 过滤掉可能产生的空字符串}
+    \PY{k}{return} \PY{p}{[}\PY{n}{tag} \PY{k}{for} \PY{n}{tag} \PY{o+ow}{in} \PY{n}{tags\PYZus{}list} \PY{k}{if} \PY{n}{tag}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} 创建一个新的 \PYZsq{}tags\PYZus{}list\PYZsq{} 列}
+\PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tags\PYZus{}list}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{manual\PYZus{}tags}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{process\PYZus{}tags\PYZus{}string}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 验证成果 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} 关键词处理前后对比 \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 使用 .loc 选择 non\PYZhy{}empty \PYZsq{}manual\PYZus{}tags\PYZsq{} 的行来展示}
+\PY{n}{sample\PYZus{}tags} \PY{o}{=} \PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{manual\PYZus{}tags}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{!=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{sample\PYZus{}tags}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{manual\PYZus{}tags}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tags\PYZus{}list}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+--- 关键词处理前后对比 ---
+                                         manual\_tags  \textbackslash{}
+0  Animals; Rats; Cell Line; mitochondrial dysfun{\ldots}
+1  Humans; Aged; Depression; China/epidemiology; {\ldots}
+2  Incidence; Epidemiology; Mortality; Global bur{\ldots}
+3  Male; Animals; Rats; Rats, Sprague-Dawley; Cel{\ldots}
+4  Adolescent; Child; Female; Humans; Risk Factor{\ldots}
+
+                                           tags\_list
+0  [Animals, Rats, Cell Line, mitochondrial dysfu{\ldots}
+1  [Humans, Aged, Depression, China/epidemiology,{\ldots}
+2  [Incidence, Epidemiology, Mortality, Global bu{\ldots}
+3  [Male, Animals, Rats, Rats, Sprague-Dawley, Ce{\ldots}
+4  [Adolescent, Child, Female, Humans, Risk Facto{\ldots}
+    \end{Verbatim}
+
+    \subsubsection{热点分析1.0版本}\label{ux70edux70b9ux5206ux67901.0ux7248ux672c}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{50}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 1. 展开 (explode) \PYZsq{}tags\PYZus{}list\PYZsq{} 列}
+\PY{n}{all\PYZus{}tags\PYZus{}series} \PY{o}{=} \PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tags\PYZus{}list}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{explode}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 2. 计数 (value\PYZus{}counts)}
+\PY{n}{tag\PYZus{}counts} \PY{o}{=} \PY{n}{all\PYZus{}tags\PYZus{}series}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 查看统计结果 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} 研究热点关键词 Top 20 \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{tag\PYZus{}counts}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 同样，存为 DataFrame 方便后续使用}
+\PY{n}{df\PYZus{}hot\PYZus{}topics} \PY{o}{=} \PY{n}{tag\PYZus{}counts}\PY{o}{.}\PY{n}{reset\PYZus{}index}\PY{p}{(}\PY{p}{)}
+\PY{n}{df\PYZus{}hot\PYZus{}topics}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tag}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} 存为DataFrame，方便后续分析 \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df\PYZus{}hot\PYZus{}topics}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+
+--- 研究热点关键词 Top 20 ---
+tags\_list
+Humans                     10041
+Female                      3769
+Male                        3689
+Animals                     3657
+Mice                        2230
+Middle Aged                 1979
+Adult                       1901
+Aged                        1585
+Retrospective Studies       1178
+Cell Line, Tumor            1061
+China                        964
+Rats                         801
+Prognosis                    774
+Risk Factors                 747
+China/epidemiology           690
+Treatment Outcome            657
+Young Adult                  575
+Mice, Inbred C57BL           552
+Cross-Sectional Studies      545
+Adolescent                   461
+Name: count, dtype: int64
+
+
+--- 存为DataFrame，方便后续分析 ---
+       tag  count
+0   Humans  10041
+1   Female   3769
+2     Male   3689
+3  Animals   3657
+4     Mice   2230
+    \end{Verbatim}
+
+    由于是医学领域，因此好多所谓的``关键词''不是研究热点，而是研究对象，因此要解决问题，使用停用词的方法
+
+    \subsubsection{热点分析2.0版本}\label{ux70edux70b9ux5206ux67902.0ux7248ux672c}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{51}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 步骤 1: 定义你想要排除的领域专属“停用词” \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} 这就是你的领域知识发挥作用的地方！}
+\PY{c+c1}{\PYZsh{} domain\PYZus{}stop\PYZus{}words = [}
+\PY{c+c1}{\PYZsh{}     \PYZsq{}Humans\PYZsq{}, \PYZsq{}Animals\PYZsq{}, \PYZsq{}human\PYZsq{}, \PYZsq{}animal\PYZsq{}, }
+\PY{c+c1}{\PYZsh{}     \PYZsq{}Female\PYZsq{}, \PYZsq{}female\PYZsq{}, \PYZsq{}Male\PYZsq{}, \PYZsq{}male\PYZsq{},}
+\PY{c+c1}{\PYZsh{}     \PYZsq{}Adult\PYZsq{}, \PYZsq{}adult\PYZsq{}, \PYZsq{}Middle Aged\PYZsq{}, \PYZsq{}Aged\PYZsq{}, }
+\PY{c+c1}{\PYZsh{}     \PYZsq{}Child\PYZsq{}, \PYZsq{}Adolescent\PYZsq{}, \PYZsq{}Infant\PYZsq{},}
+\PY{c+c1}{\PYZsh{}     \PYZsq{}Case Reports\PYZsq{}, \PYZsh{} 这个通常也是文献类型标签，而非主题}
+\PY{c+c1}{\PYZsh{}     \PYZsq{}patient\PYZsq{}, \PYZsq{}patients\PYZsq{},\PYZsq{}China\PYZsq{}}
+\PY{c+c1}{\PYZsh{} ]}
+\PY{c+c1}{\PYZsh{} 注意：这里我加入了大小写和一些你可能也会遇到的词，你可以随时增删。}
+\PY{c+c1}{\PYZsh{} 该表已在上方定义}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 步骤 2: 在计数前，先从原始的 Series 中排除这些词 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} 1. 展开 (explode) \PYZsq{}tags\PYZus{}list\PYZsq{} 列}
+\PY{n}{all\PYZus{}tags\PYZus{}series} \PY{o}{=} \PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tags\PYZus{}list}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{explode}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 2. 过滤 (filter): 仅保留不在 domain\PYZus{}stop\PYZus{}words 列表中的关键词}
+\PY{c+c1}{\PYZsh{} 使用 .isin() 方法，然后用 \PYZti{} 取反，意为 \PYZdq{}not in\PYZdq{}}
+\PY{n}{filtered\PYZus{}tags\PYZus{}series} \PY{o}{=} \PY{n}{all\PYZus{}tags\PYZus{}series}\PY{p}{[}\PY{o}{\PYZti{}}\PY{n}{all\PYZus{}tags\PYZus{}series}\PY{o}{.}\PY{n}{isin}\PY{p}{(}\PY{n}{domain\PYZus{}stop\PYZus{}words}\PY{p}{)}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} 3. 计数 (value\PYZus{}counts): 在过滤后的数据上进行计数}
+\PY{n}{tag\PYZus{}counts\PYZus{}filtered} \PY{o}{=} \PY{n}{filtered\PYZus{}tags\PYZus{}series}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 查看统计结果 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} (过滤后) 真正的研究热点关键词 Top 50 \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{tag\PYZus{}counts\PYZus{}filtered}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 同样，存为 DataFrame 方便后续使用}
+\PY{n}{df\PYZus{}hot\PYZus{}topics} \PY{o}{=} \PY{n}{tag\PYZus{}counts\PYZus{}filtered}\PY{o}{.}\PY{n}{reset\PYZus{}index}\PY{p}{(}\PY{p}{)}
+\PY{n}{df\PYZus{}hot\PYZus{}topics}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tag}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} 存为DataFrame，方便后续分析 \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df\PYZus{}hot\PYZus{}topics}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+
+--- (过滤后) 真正的研究热点关键词 Top 50 ---
+tags\_list
+Gene Expression Regulation, Neoplastic      381
+COVID-19                                    309
+SARS-CoV-2                                  248
+Algorithms                                  214
+Cell Proliferation/genetics                 208
+Reactive Oxygen Species/metabolism          196
+Biomarkers                                  184
+Tumor Microenvironment                      173
+*MicroRNAs/genetics/metabolism              171
+Polymorphism, Single Nucleotide             169
+Immunotherapy                               161
+Mendelian randomization                     154
+Gene Expression Profiling                   147
+Genome-Wide Association Study               141
+*Air Pollutants/analysis                    141
+Mutation                                    134
+*COVID-19                                   133
+Oxidative Stress                            133
+Breast cancer                               131
+Cell Movement                               130
+Hepatocellular carcinoma                    130
+Molecular Docking Simulation                129
+*MicroRNAs/genetics                         128
+Signal Transduction/drug effects            126
+Genetic Predisposition to Disease           121
+Cell Differentiation                        117
+Cytokines/metabolism                        117
+Magnetic Resonance Imaging                  114
+Cell Movement/genetics                      111
+Oxidative stress                            109
+Machine learning                            108
+Depression                                  107
+Cell Proliferation/drug effects             106
+Particulate Matter/analysis                 102
+Apoptosis/drug effects                      102
+Machine Learning                            101
+Autophagy                                    98
+Proto-Oncogene Proteins c-akt/metabolism     98
+Environmental Monitoring                     97
+Apoptosis/genetics                           95
+*Neural Networks, Computer                   94
+*Deep Learning                               93
+*Algorithms                                  92
+breast cancer                                91
+Biomarkers/blood                             91
+Neoplasm Staging                             90
+Transcriptome                                90
+Biomarkers, Tumor/genetics                   89
+*Machine Learning                            89
+Neural Networks, Computer                    89
+Name: count, dtype: int64
+
+
+--- 存为DataFrame，方便后续分析 ---
+                                      tag  count
+0  Gene Expression Regulation, Neoplastic    381
+1                                COVID-19    309
+2                              SARS-CoV-2    248
+3                              Algorithms    214
+4             Cell Proliferation/genetics    208
+    \end{Verbatim}
+
+    \subsection{第六步：时间维度分析 -
+揭示领域发展趋势}\label{ux7b2cux516dux6b65ux65f6ux95f4ux7ef4ux5ea6ux5206ux6790---ux63edux793aux9886ux57dfux53d1ux5c55ux8d8bux52bf}
+
+    A. 宏观视角：领域的年度发文趋势
+目标：绘制一张折线图，展示从数据开始年份到最近年份，每年发表的论文数量。
+
+为什么重要：这张图是领域的``心电图''。它能告诉你：
+
+该领域是处于起步期、爆发期、成熟期还是衰退期？
+有没有某个特定年份发生突变？（比如某项突破性技术出现后，发文量暴增）
+你的数据覆盖的时间范围是否完整？（比如2023年的数据是否因为采集不全而偏低）
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{52}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 设置一个好看的绘图风格}
+\PY{n}{sns}\PY{o}{.}\PY{n}{set\PYZus{}theme}\PY{p}{(}\PY{n}{style}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{whitegrid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{palette}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{viridis}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 1. 统计每年的发文量}
+\PY{n}{annual\PYZus{}counts} \PY{o}{=} \PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{sort\PYZus{}index}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 关键修改：筛选出2021到2025年的数据 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} 确保你的数据中包含了这些年份。如果数据提前结束，比如只有到2024年，}
+\PY{c+c1}{\PYZsh{} 那么2025年就会没有点。}
+\PY{n}{annual\PYZus{}counts\PYZus{}filtered} \PY{o}{=} \PY{n}{annual\PYZus{}counts}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{l+m+mi}{2021}\PY{p}{:}\PY{l+m+mi}{2025}\PY{p}{]} \PY{c+c1}{\PYZsh{} 使用 .loc 进行基于标签的切片}
+
+
+\PY{c+c1}{\PYZsh{} 2. 绘图}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{14}\PY{p}{,} \PY{l+m+mi}{7}\PY{p}{)}\PY{p}{,}\PY{n}{dpi} \PY{o}{=} \PY{l+m+mi}{200}\PY{p}{)} \PY{c+c1}{\PYZsh{} 创建一个更宽的图表}
+\PY{c+c1}{\PYZsh{} 绘制筛选后的数据}
+\PY{n}{ax} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{lineplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{annual\PYZus{}counts\PYZus{}filtered}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{n}{annual\PYZus{}counts\PYZus{}filtered}\PY{o}{.}\PY{n}{values}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{lw}\PY{o}{=}\PY{l+m+mf}{2.5}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 美化图表 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Annual Publication Trend in the Field (2021\PYZhy{}2025)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)} \PY{c+c1}{\PYZsh{} 标题也明确一下时间范围}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Number of Publications}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 更精确地设置x轴刻度 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} 1. 设置x轴显示范围，确保从2021开始，到2025结束}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlim}\PY{p}{(}\PY{l+m+mf}{2020.9}\PY{p}{,} \PY{l+m+mf}{2025.1}\PY{p}{)} \PY{c+c1}{\PYZsh{} 稍微扩展一点点，让首尾的marker能完全显示}
+
+\PY{c+c1}{\PYZsh{} 2. 明确指定刻度位置和标签}
+\PY{c+c1}{\PYZsh{} 使用整数列表作为刻度位置和标签}
+\PY{c+c1}{\PYZsh{} 注意：如果2025年的数据是部分数据（比如只收集到上半年），}
+\PY{c+c1}{\PYZsh{} 那么这个点的数值可能偏低，你需要根据上下文说明。}
+\PY{n}{desired\PYZus{}xticks} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{2021}\PY{p}{,} \PY{l+m+mi}{2022}\PY{p}{,} \PY{l+m+mi}{2023}\PY{p}{,} \PY{l+m+mi}{2024}\PY{p}{,} \PY{l+m+mi}{2025}\PY{p}{]}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xticks}\PY{p}{(}\PY{n}{desired\PYZus{}xticks}\PY{p}{,} \PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{45}\PY{p}{,} \PY{n}{ha}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{right}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{} ha=\PYZsq{}right\PYZsq{} 让标签右对齐刻度}
+
+\PY{c+c1}{\PYZsh{} 移除之前可能引起冲突的 ax.set\PYZus{}xticks}
+\PY{c+c1}{\PYZsh{} ax.set\PYZus{}xticks(ax.get\PYZus{}xticks()[::2]) \PYZsh{} 这行现在不需要了}
+
+\PY{c+c1}{\PYZsh{} 显示网格（可选，因为 sns.set\PYZus{}theme 已经设置了）}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.7}\PY{p}{)} 
+
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{} 自动调整布局}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{data_process_files/data_process_42_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    B. 微观视角：追踪研究热点的演变
+目标：挑选出排名前5的热门关键词，并绘制一张多条折线的图表，追踪它们各自在每年的热度（论文数量）变化。
+
+为什么重要：这是本项目的核心洞察之一！它能告诉你：
+
+哪个是``常青树''一样的经典热点？ 哪个是近年来迅速崛起的``当红炸子鸡''？
+有没有某个曾经的热点正在``退烧''？
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{53}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} df\PYZus{}hot\PYZus{}topics 是你上一步创建的关键词计数DataFrame}
+
+\PY{c+c1}{\PYZsh{} 设置一个好看的绘图风格}
+\PY{n}{sns}\PY{o}{.}\PY{n}{set\PYZus{}theme}\PY{p}{(}\PY{n}{style}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{whitegrid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{palette}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{viridis}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{} palette \PYZdq{}viridis\PYZdq{} 颜色区分度很好}
+
+\PY{c+c1}{\PYZsh{} ====================================================================}
+\PY{c+c1}{\PYZsh{} 假设 df\PYZus{}hot\PYZus{}topics 已经存在并包含 \PYZsq{}tag\PYZsq{} 列和对应的计数}
+\PY{c+c1}{\PYZsh{} 如果没有，一个简单的示例 df\PYZus{}hot\PYZus{}topics 创建方法：}
+\PY{c+c1}{\PYZsh{} 例如：}
+\PY{c+c1}{\PYZsh{} data\PYZus{}mock = \PYZob{}\PYZsq{}tag\PYZsq{}: [\PYZsq{}Inflammation\PYZsq{}, \PYZsq{}Immunotherapy\PYZsq{}, \PYZsq{}Metabolic Syndrome\PYZsq{}, \PYZsq{}Microbiome\PYZsq{}, \PYZsq{}CRISPR\PYZsq{}],}
+\PY{c+c1}{\PYZsh{}              \PYZsq{}count\PYZsq{}: [500, 450, 400, 380, 350]\PYZcb{}}
+\PY{c+c1}{\PYZsh{} df\PYZus{}hot\PYZus{}topics = pd.DataFrame(data\PYZus{}mock)}
+\PY{c+c1}{\PYZsh{} ====================================================================}
+
+
+\PY{c+c1}{\PYZsh{} 1. 选出Top N的热门关键词}
+\PY{n}{top\PYZus{}n\PYZus{}tags} \PY{o}{=} \PY{l+m+mi}{5}
+\PY{n}{top\PYZus{}tags} \PY{o}{=} \PY{n}{df\PYZus{}hot\PYZus{}topics}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tag}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{n}{top\PYZus{}n\PYZus{}tags}\PY{p}{)}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} Tracking the Top }\PY{l+s+si}{\PYZob{}}\PY{n}{top\PYZus{}n\PYZus{}tags}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ Hot Topics: \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{top\PYZus{}tags}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 2. 准备用于绘图的数据}
+\PY{c+c1}{\PYZsh{} 我们需要一个包含 \PYZsq{}year\PYZsq{} 和单个 \PYZsq{}tag\PYZsq{} 的长格式 DataFrame}
+\PY{c+c1}{\PYZsh{} 首先，筛选出包含这些top tags的论文}
+\PY{n}{df\PYZus{}exploded\PYZus{}tags} \PY{o}{=} \PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tags\PYZus{}list}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{explode}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tags\PYZus{}list}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{} 确保处理空值}
+
+\PY{c+c1}{\PYZsh{} 筛选出我们感兴趣的年份范围（2021\PYZhy{}2025）}
+\PY{n}{df\PYZus{}exploded\PYZus{}tags\PYZus{}filtered\PYZus{}year} \PY{o}{=} \PY{n}{df\PYZus{}exploded\PYZus{}tags}\PY{p}{[}\PY{p}{(}\PY{n}{df\PYZus{}exploded\PYZus{}tags}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{l+m+mi}{2021}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{df\PYZus{}exploded\PYZus{}tags}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mi}{2025}\PY{p}{)}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} 再筛选出Top N的热门关键词}
+\PY{n}{df\PYZus{}top\PYZus{}tags\PYZus{}trend} \PY{o}{=} \PY{n}{df\PYZus{}exploded\PYZus{}tags\PYZus{}filtered\PYZus{}year}\PY{p}{[}\PY{n}{df\PYZus{}exploded\PYZus{}tags\PYZus{}filtered\PYZus{}year}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tags\PYZus{}list}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{isin}\PY{p}{(}\PY{n}{top\PYZus{}tags}\PY{p}{)}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} 3. 按年份和关键词分组计数}
+\PY{c+c1}{\PYZsh{} 为了确保每个关键词在每个年份都有数据点（即使为0），可以使用 unstack/stack 填充缺失值}
+\PY{n}{trend\PYZus{}data} \PY{o}{=} \PY{n}{df\PYZus{}top\PYZus{}tags\PYZus{}trend}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tags\PYZus{}list}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{unstack}\PY{p}{(}\PY{n}{fill\PYZus{}value}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{stack}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{reset\PYZus{}index}\PY{p}{(}\PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 4. 绘制多条折线图}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{14}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{,} \PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{200}\PY{p}{)}
+\PY{n}{ax} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{lineplot}\PY{p}{(}\PY{n}{data}\PY{o}{=}\PY{n}{trend\PYZus{}data}\PY{p}{,} 
+                  \PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                  \PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                  \PY{n}{hue}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tags\PYZus{}list}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}   \PY{c+c1}{\PYZsh{} 颜色区分}
+                  \PY{n}{style}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tags\PYZus{}list}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} !!! 关键改动：线型和标记区分}
+                  \PY{n}{lw}\PY{o}{=}\PY{l+m+mf}{2.5}\PY{p}{,} 
+                  \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}        \PY{c+c1}{\PYZsh{} 仍然可以设置一个默认标记（如果style不提供）}
+                  \PY{n}{markersize}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{)}      \PY{c+c1}{\PYZsh{} 增加标记大小}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 美化图表 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Evolution of Top }\PY{l+s+si}{\PYZob{}}\PY{n}{top\PYZus{}n\PYZus{}tags}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ Research Hotspots Over Time (2021\PYZhy{}2025)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Annual Publication Count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 设置X轴刻度为整数年份，并确保只显示2021\PYZhy{}2025}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlim}\PY{p}{(}\PY{l+m+mf}{2020.9}\PY{p}{,} \PY{l+m+mf}{2025.1}\PY{p}{)} \PY{c+c1}{\PYZsh{} 略微扩展边界，确保首尾点完整显示}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xticks}\PY{p}{(}\PY{n+nb}{sorted}\PY{p}{(}\PY{n}{trend\PYZus{}data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{45}\PY{p}{,} \PY{n}{ha}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{right}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 调整图例位置，避免遮挡数据}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Hot Topics}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{bbox\PYZus{}to\PYZus{}anchor}\PY{o}{=}\PY{p}{(}\PY{l+m+mf}{1.02}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{upper left}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{borderaxespad}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)} 
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{n}{rect}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mf}{0.88}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{} 调整布局，为图例留出空间}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+--- Tracking the Top 5 Hot Topics: ---
+['Gene Expression Regulation, Neoplastic', 'COVID-19', 'SARS-CoV-2',
+'Algorithms', 'Cell Proliferation/genetics']
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{data_process_files/data_process_44_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{54}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 假设 trend\PYZus{}data 已经通过之前的代码生成，并且已经包含了2021\PYZhy{}2025年的数据。}
+\PY{c+c1}{\PYZsh{} 确保 top\PYZus{}tags 也已经定义。}
+
+\PY{c+c1}{\PYZsh{} 将 trend\PYZus{}data 从长格式转换为宽格式，以便提取每个关键词的年度数据}
+\PY{n}{pivot\PYZus{}table} \PY{o}{=} \PY{n}{trend\PYZus{}data}\PY{o}{.}\PY{n}{pivot}\PY{p}{(}\PY{n}{index}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tags\PYZus{}list}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{values}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 定义我们关心的年份范围，确保顺序正确}
+\PY{n}{years\PYZus{}to\PYZus{}extract} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{2021}\PY{p}{,} \PY{l+m+mi}{2022}\PY{p}{,} \PY{l+m+mi}{2023}\PY{p}{,} \PY{l+m+mi}{2024}\PY{p}{,} \PY{l+m+mi}{2025}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} 提取并生成二维列表}
+\PY{n}{hot\PYZus{}topics\PYZus{}counts\PYZus{}by\PYZus{}year} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{tag} \PY{o+ow}{in} \PY{n}{top\PYZus{}tags}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} 确保 tag 存在于 pivot\PYZus{}table 的索引中}
+    \PY{k}{if} \PY{n}{tag} \PY{o+ow}{in} \PY{n}{pivot\PYZus{}table}\PY{o}{.}\PY{n}{index}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} 获取该 tag 在指定年份范围内的计数，并转换为整数列表}
+        \PY{n}{counts\PYZus{}for\PYZus{}tag} \PY{o}{=} \PY{n}{pivot\PYZus{}table}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{tag}\PY{p}{,} \PY{n}{years\PYZus{}to\PYZus{}extract}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{int}\PY{p}{)}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}
+        \PY{n}{hot\PYZus{}topics\PYZus{}counts\PYZus{}by\PYZus{}year}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{[}\PY{n}{tag}\PY{p}{]} \PY{o}{+} \PY{n}{counts\PYZus{}for\PYZus{}tag}\PY{p}{)}
+    \PY{k}{else}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} 如果某个 top\PYZus{}tag 在数据中没有出现或在过滤后被移除，可以添加一个全零的行}
+        \PY{n}{hot\PYZus{}topics\PYZus{}counts\PYZus{}by\PYZus{}year}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{[}\PY{n}{tag}\PY{p}{]} \PY{o}{+} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{*} \PY{n+nb}{len}\PY{p}{(}\PY{n}{years\PYZus{}to\PYZus{}extract}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 输出结果}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} Hot Topics Annual Counts (2021\PYZhy{}2025) in 2D List Format \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hot Topic}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{+} \PY{n}{years\PYZus{}to\PYZus{}extract}\PY{p}{)} \PY{c+c1}{\PYZsh{} 打印表头}
+\PY{k}{for} \PY{n}{row} \PY{o+ow}{in} \PY{n}{hot\PYZus{}topics\PYZus{}counts\PYZus{}by\PYZus{}year}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{row}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+--- Hot Topics Annual Counts (2021-2025) in 2D List Format ---
+['Hot Topic', 2021, 2022, 2023, 2024, 2025]
+['Gene Expression Regulation, Neoplastic', 74, 94, 40, 90, 83]
+['COVID-19', 102, 78, 60, 40, 29]
+['SARS-CoV-2', 92, 54, 38, 34, 30]
+['Algorithms', 24, 44, 37, 46, 63]
+['Cell Proliferation/genetics', 38, 78, 44, 34, 14]
+    \end{Verbatim}
+
+    \subsection{第七步：网络分析 -
+绘制作者合作关系网络}\label{ux7b2cux4e03ux6b65ux7f51ux7edcux5206ux6790---ux7ed8ux5236ux4f5cux8005ux5408ux4f5cux5173ux7cfbux7f51ux7edc}
+
+    核心思想非常简单：同一篇论文里的任意两个作者，都算作有一次合作关系。我们将遍历每一篇论文的
+authors\_list，并为其中的作者两两之间连上一条线（在网络中称为``边''，edge）。
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{55}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} df\PYZus{}clean 是我们的主 DataFrame}
+
+\PY{c+c1}{\PYZsh{} 1. 创建一个空的无向图对象}
+\PY{n}{G} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{Graph}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 2. 遍历 DataFrame 中的每一行 (每一篇论文)}
+\PY{k}{for} \PY{n}{index}\PY{p}{,} \PY{n}{row} \PY{o+ow}{in} \PY{n}{df\PYZus{}clean}\PY{o}{.}\PY{n}{iterrows}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{authors} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{authors\PYZus{}list}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+    
+    \PY{c+c1}{\PYZsh{}一篇论文至少要有两位作者才能形成合作关系}
+    \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{authors}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mi}{1}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} 使用 combinations(\PYZsq{}ABCD\PYZsq{}, 2) 会得到 AB AC AD BC BD CD}
+        \PY{c+c1}{\PYZsh{} 这正是我们想要的：作者列表中的所有配对}
+        \PY{n}{edges} \PY{o}{=} \PY{n}{combinations}\PY{p}{(}\PY{n}{authors}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} 将这些代表合作关系的“边”添加到图中}
+        \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}edges\PYZus{}from}\PY{p}{(}\PY{n}{edges}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 初步检查网络 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} 合作网络基本信息 \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{网络中共有 }\PY{l+s+si}{\PYZob{}}\PY{n}{G}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ 位作者 (节点)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{他们之间构成了 }\PY{l+s+si}{\PYZob{}}\PY{n}{G}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}edges}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ 条合作关系 (边)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+--- 合作网络基本信息 ---
+网络中共有 14929 位作者 (节点)
+他们之间构成了 654264 条合作关系 (边)
+    \end{Verbatim}
+
+    直接绘制整个网络通常会得到一个巨大而混乱的``毛线球''，尤其当作者数量成千上万时。一个聪明的策略是，只绘制网络的核心部分。
+
+在网络科学中，这个核心部分通常指``最大连通分量''（The Largest Connected
+Component）------也就是网络中最大的那个相互连接的子群体。
+
+    \subsubsection{1.0版本}\label{ux7248ux672c}
+
+因为太耗时，而且没有任何用，全部注释掉
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{56}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} \PYZsh{} 1. 找到所有连通分量，并找出最大的那个}
+\PY{c+c1}{\PYZsh{} \PYZsh{} 连通分量是网络中的子图，子图中的任意两点都相互连通}
+\PY{c+c1}{\PYZsh{} components = nx.connected\PYZus{}components(G)}
+\PY{c+c1}{\PYZsh{} largest\PYZus{}cc = max(components, key=len)}
+\PY{c+c1}{\PYZsh{} G\PYZus{}core = G.subgraph(largest\PYZus{}cc)}
+
+\PY{c+c1}{\PYZsh{} print(f\PYZdq{}\PYZbs{}n\PYZhy{}\PYZhy{}\PYZhy{} 核心社群网络信息 \PYZhy{}\PYZhy{}\PYZhy{}\PYZdq{})}
+\PY{c+c1}{\PYZsh{} print(f\PYZdq{}核心网络包含 \PYZob{}G\PYZus{}core.number\PYZus{}of\PYZus{}nodes()\PYZcb{} 位作者\PYZdq{})}
+\PY{c+c1}{\PYZsh{} print(f\PYZdq{}他们之间的合作关系有 \PYZob{}G\PYZus{}core.number\PYZus{}of\PYZus{}edges()\PYZcb{} 条\PYZdq{})}
+
+
+\PY{c+c1}{\PYZsh{} \PYZsh{} 2. 绘图！这可能需要一点时间来计算布局}
+\PY{c+c1}{\PYZsh{} plt.figure(figsize=(15, 15))}
+
+\PY{c+c1}{\PYZsh{} \PYZsh{} 使用 spring\PYZus{}layout 布局算法，它会模拟物理上的引力和斥力让图更美观}
+\PY{c+c1}{\PYZsh{} \PYZsh{} k值可以调整节点间的距离, iterations可以增加迭代次数让布局更好}
+\PY{c+c1}{\PYZsh{} pos = nx.spring\PYZus{}layout(G\PYZus{}core, k=0.15, iterations=50)}
+
+\PY{c+c1}{\PYZsh{} \PYZsh{} 为了让图更清晰，我们可以根据节点的重要性（连接数）来调整大小}
+\PY{c+c1}{\PYZsh{} degrees = dict(G\PYZus{}core.degree())}
+\PY{c+c1}{\PYZsh{} node\PYZus{}sizes = [v * 20 + 20 for v in degrees.values()] \PYZsh{} 基础大小20，再根据连接数放大}
+
+\PY{c+c1}{\PYZsh{} nx.draw(G\PYZus{}core, }
+\PY{c+c1}{\PYZsh{}         pos,}
+\PY{c+c1}{\PYZsh{}         with\PYZus{}labels=True,      \PYZsh{} 显示作者标签}
+\PY{c+c1}{\PYZsh{}         node\PYZus{}size=node\PYZus{}sizes,  \PYZsh{} 设置节点大小}
+\PY{c+c1}{\PYZsh{}         node\PYZus{}color=\PYZsq{}\PYZsh{}3498db\PYZsq{},  \PYZsh{} 节点颜色}
+\PY{c+c1}{\PYZsh{}         edge\PYZus{}color=\PYZsq{}\PYZsh{}bdc3c7\PYZsq{},  \PYZsh{} 边的颜色}
+\PY{c+c1}{\PYZsh{}         font\PYZus{}size=8,           \PYZsh{} 字体大小}
+\PY{c+c1}{\PYZsh{}         font\PYZus{}color=\PYZsq{}\PYZsh{}2c3e50\PYZsq{}   \PYZsh{} 字体颜色}
+\PY{c+c1}{\PYZsh{}        )}
+
+\PY{c+c1}{\PYZsh{} plt.title(\PYZsq{}Author Collaboration Network (Core Community)\PYZsq{}, fontsize=20)}
+\PY{c+c1}{\PYZsh{} plt.show()}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{data_process_files/output.png}}
+\caption{output.png}
+\end{figure}
+
+    发现记录太多，再次``核心化''
+
+    我们将采用两种过滤方式，双管齐下：
+
+\begin{itemize}
+\tightlist
+\item
+  节点过滤 (Node
+  Filtering)：只保留最重要的作者。什么最重要？我们可以定义一个标准，比如：只保留合作关系数量（度，degree）排在前100或前200位的作者。这些是网络中的``超级连接者''。
+\item
+  边过滤 (Edge
+  Filtering)：只保留最强的合作关系。一次合作和十次合作的意义是不同的。我们将给每一条``边''加上权重（weight），代表两位作者合作的论文次数，然后只显示权重高于某个阈值的边（比如至少合作过3次以上）。
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{57}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 这里我们不用 G，而是创建一个全新的带权重的图 G\PYZus{}weighted}
+\PY{n}{G\PYZus{}weighted} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{Graph}\PY{p}{(}\PY{p}{)}
+\PY{n}{all\PYZus{}edges} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} 遍历每一篇论文，收集所有的合作配对}
+\PY{k}{for} \PY{n}{index}\PY{p}{,} \PY{n}{row} \PY{o+ow}{in} \PY{n}{df\PYZus{}clean}\PY{o}{.}\PY{n}{iterrows}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{authors} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{authors\PYZus{}list}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+    \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{authors}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mi}{1}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} 为了让 (A,B) 和 (B,A) 被视作同一个，我们先排序}
+        \PY{n}{sorted\PYZus{}authors} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{authors}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} 生成配对}
+        \PY{n}{edges} \PY{o}{=} \PY{n}{combinations}\PY{p}{(}\PY{n}{sorted\PYZus{}authors}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+        \PY{n}{all\PYZus{}edges}\PY{o}{.}\PY{n}{extend}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{edges}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 使用 Counter 一次性统计所有配对的出现次数}
+\PY{n}{edge\PYZus{}weights} \PY{o}{=} \PY{n}{Counter}\PY{p}{(}\PY{n}{all\PYZus{}edges}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 将带权重的边添加到新图中}
+\PY{k}{for} \PY{n}{edge}\PY{p}{,} \PY{n}{weight} \PY{o+ow}{in} \PY{n}{edge\PYZus{}weights}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{author1}\PY{p}{,} \PY{n}{author2} \PY{o}{=} \PY{n}{edge}
+    \PY{n}{G\PYZus{}weighted}\PY{o}{.}\PY{n}{add\PYZus{}edge}\PY{p}{(}\PY{n}{author1}\PY{p}{,} \PY{n}{author2}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{n}{weight}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} 加权网络构建完成 \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{网络中共有 }\PY{l+s+si}{\PYZob{}}\PY{n}{G\PYZus{}weighted}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ 位作者}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{他们之间构成了 }\PY{l+s+si}{\PYZob{}}\PY{n}{G\PYZus{}weighted}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}edges}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ 条独特的合作关系}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+--- 加权网络构建完成 ---
+网络中共有 14929 位作者
+他们之间构成了 654264 条独特的合作关系
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{58}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 设定你的过滤阈值 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} 1. 节点度阈值：一个作者至少要有多少个合作者才被保留？}
+\PY{n}{top\PYZus{}n\PYZus{}authors} \PY{o}{=} \PY{l+m+mi}{50} \PY{c+c1}{\PYZsh{} 我们也可以按排名来，比如只保留度最高的前100位作者}
+\PY{n}{degrees} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{n}{G\PYZus{}weighted}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{sorted\PYZus{}degrees} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{degrees}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{key}\PY{o}{=}\PY{k}{lambda} \PY{n}{item}\PY{p}{:} \PY{n}{item}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{reverse}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{core\PYZus{}authors} \PY{o}{=} \PY{p}{[}\PY{n}{author} \PY{k}{for} \PY{n}{author}\PY{p}{,} \PY{n}{degree} \PY{o+ow}{in} \PY{n}{sorted\PYZus{}degrees}\PY{p}{[}\PY{p}{:}\PY{n}{top\PYZus{}n\PYZus{}authors}\PY{p}{]}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} 2. 边权重阈值：两个作者至少合作几次才显示连接？}
+\PY{n}{WEIGHT\PYZus{}THRESHOLD} \PY{o}{=} \PY{l+m+mi}{3} \PY{c+c1}{\PYZsh{} 至少合作3次}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 开始过滤 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} 创建一个最终用于可视化的图}
+\PY{n}{G\PYZus{}core\PYZus{}strong} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{Graph}\PY{p}{(}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{author1}\PY{p}{,} \PY{n}{author2}\PY{p}{,} \PY{n}{data} \PY{o+ow}{in} \PY{n}{G\PYZus{}weighted}\PY{o}{.}\PY{n}{edges}\PY{p}{(}\PY{n}{data}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} 条件1: 两个作者都必须是核心作者}
+    \PY{c+c1}{\PYZsh{} 条件2: 他们的合作次数必须达到阈值}
+    \PY{k}{if} \PY{n}{author1} \PY{o+ow}{in} \PY{n}{core\PYZus{}authors} \PY{o+ow}{and} \PY{n}{author2} \PY{o+ow}{in} \PY{n}{core\PYZus{}authors} \PY{o+ow}{and} \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{WEIGHT\PYZus{}THRESHOLD}\PY{p}{:}
+        \PY{n}{G\PYZus{}core\PYZus{}strong}\PY{o}{.}\PY{n}{add\PYZus{}edge}\PY{p}{(}\PY{n}{author1}\PY{p}{,} \PY{n}{author2}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} 过滤后的核心星座网络 \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{核心网络包含 }\PY{l+s+si}{\PYZob{}}\PY{n}{G\PYZus{}core\PYZus{}strong}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ 位顶尖作者}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{他们之间的强连接关系有 }\PY{l+s+si}{\PYZob{}}\PY{n}{G\PYZus{}core\PYZus{}strong}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}edges}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ 条}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+--- 过滤后的核心星座网络 ---
+核心网络包含 50 位顶尖作者
+他们之间的强连接关系有 1275 条
+    \end{Verbatim}
+
+    \subsubsection{2.0版本}\label{ux7248ux672c}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{59}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} =====================================================================}
+\PY{c+c1}{\PYZsh{} 更新后的可视化代码块 (节点已缩小)}
+\PY{c+c1}{\PYZsh{} =====================================================================}
+
+\PY{k}{if} \PY{n}{G\PYZus{}core\PYZus{}strong}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}nodes}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,} \PY{l+m+mi}{20}\PY{p}{)}\PY{p}{,}\PY{n}{dpi} \PY{o}{=} \PY{l+m+mi}{200}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} 布局算法 (保持不变)}
+    \PY{n}{pos} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{spring\PYZus{}layout}\PY{p}{(}\PY{n}{G\PYZus{}core\PYZus{}strong}\PY{p}{,} \PY{n}{k}\PY{o}{=}\PY{l+m+mf}{0.8}\PY{p}{,} \PY{n}{iterations}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{seed}\PY{o}{=}\PY{l+m+mi}{42}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 关键修改在这里 \PYZhy{}\PYZhy{}\PYZhy{}}
+    \PY{c+c1}{\PYZsh{} 节点大小：减小了基础大小和缩放因子}
+    \PY{n}{original\PYZus{}degrees} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{node}\PY{p}{:} \PY{n}{degrees}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{node}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)} \PY{k}{for} \PY{n}{node} \PY{o+ow}{in} \PY{n}{G\PYZus{}core\PYZus{}strong}\PY{o}{.}\PY{n}{nodes}\PY{p}{(}\PY{p}{)}\PY{p}{\PYZcb{}}
+    \PY{c+c1}{\PYZsh{} NEW: Smaller node size calculation}
+    \PY{n}{node\PYZus{}sizes} \PY{o}{=} \PY{p}{[}\PY{n}{v} \PY{o}{*} \PY{l+m+mf}{0.5} \PY{o}{+} \PY{l+m+mi}{20} \PY{k}{for} \PY{n}{v} \PY{o+ow}{in} \PY{n}{original\PYZus{}degrees}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+
+    \PY{c+c1}{\PYZsh{} 边的宽度 (可以保持不变，也可以适当调细一点，比如乘以0.6)}
+    \PY{n}{edge\PYZus{}widths} \PY{o}{=} \PY{p}{[}\PY{n}{d}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{*} \PY{l+m+mf}{0.02} \PY{k}{for} \PY{p}{(}\PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{d}\PY{p}{)} \PY{o+ow}{in} \PY{n}{G\PYZus{}core\PYZus{}strong}\PY{o}{.}\PY{n}{edges}\PY{p}{(}\PY{n}{data}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{]}
+    
+    \PY{c+c1}{\PYZsh{} 字体大小也可以适当调整以匹配更小的节点}
+    \PY{n}{label\PYZus{}font\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{8}
+
+    \PY{n}{nx}\PY{o}{.}\PY{n}{draw\PYZus{}networkx\PYZus{}nodes}\PY{p}{(}\PY{n}{G\PYZus{}core\PYZus{}strong}\PY{p}{,} \PY{n}{pos}\PY{p}{,} 
+                           \PY{n}{node\PYZus{}size}\PY{o}{=}\PY{n}{node\PYZus{}sizes}\PY{p}{,} 
+                           \PY{n}{node\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}cc6240}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                           \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.9}\PY{p}{)} \PY{c+c1}{\PYZsh{} 稍微调高一点透明度让颜色更实}
+                           
+    \PY{n}{nx}\PY{o}{.}\PY{n}{draw\PYZus{}networkx\PYZus{}edges}\PY{p}{(}\PY{n}{G\PYZus{}core\PYZus{}strong}\PY{p}{,} \PY{n}{pos}\PY{p}{,} 
+                           \PY{n}{width}\PY{o}{=}\PY{n}{edge\PYZus{}widths}\PY{p}{,} 
+                           \PY{n}{edge\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}3e3e3e}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                           \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.6}\PY{p}{)}
+                           
+    \PY{n}{nx}\PY{o}{.}\PY{n}{draw\PYZus{}networkx\PYZus{}labels}\PY{p}{(}\PY{n}{G\PYZus{}core\PYZus{}strong}\PY{p}{,} \PY{n}{pos}\PY{p}{,} 
+                            \PY{n}{font\PYZus{}size}\PY{o}{=}\PY{n}{label\PYZus{}font\PYZus{}size}\PY{p}{,} \PY{c+c1}{\PYZsh{} 使用调整后的字体大小}
+                            \PY{n}{font\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}000000}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Core Collaboration Network (Top }\PY{l+s+si}{\PYZob{}}\PY{n}{top\PYZus{}n\PYZus{}authors}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ Authors, Min. }\PY{l+s+si}{\PYZob{}}\PY{n}{WEIGHT\PYZus{}THRESHOLD}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ Collaborations)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{25}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{k}{else}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{在当前阈值下，没有形成任何连接。请尝试降低阈值。}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{data_process_files/data_process_58_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{终极篇章：关键词共现网络 -
+绘制你所在领域的知识图谱}\label{ux7ec8ux6781ux7bc7ux7ae0ux5173ux952eux8bcdux5171ux73b0ux7f51ux7edc---ux7ed8ux5236ux4f60ux6240ux5728ux9886ux57dfux7684ux77e5ux8bc6ux56feux8c31}
+
+    \begin{itemize}
+\tightlist
+\item
+  识别研究主题：紧密相连的关键词群组，直接对应着领域内的主要研究方向或主题。例如，你可能会发现一个由``深度学习''、``卷积神经网络''、``图像识别''构成的紧密集群。
+\item
+  发现领域核心与前沿：网络中心的大节点通常是该领域最核心、最基础的概念。而处于网络边缘或连接不同集群的节点，则可能是新兴的、交叉的或前沿的研究方向。
+\item
+  理解知识结构：这张图告诉你，你所在领域的知识是如何组织起来的。哪些概念是基石？哪些是热门应用？哪些是连接不同思想的桥梁？
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{60}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} =====================================================================}
+\PY{c+c1}{\PYZsh{} 步骤 1 \PYZam{} 2: 构建一个*已过滤*的共现网络}
+\PY{c+c1}{\PYZsh{} =====================================================================}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 计算过滤后的总频率 (用于节点大小) \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n}{all\PYZus{}tags\PYZus{}lists} \PY{o}{=} \PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tags\PYZus{}list}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 展开所有列表，并在此处进行过滤}
+\PY{n}{filtered\PYZus{}all\PYZus{}tags} \PY{o}{=} \PY{p}{[}
+    \PY{n}{tag} \PY{k}{for} \PY{n}{tags\PYZus{}list} \PY{o+ow}{in} \PY{n}{all\PYZus{}tags\PYZus{}lists} 
+    \PY{k}{for} \PY{n}{tag} \PY{o+ow}{in} \PY{n}{tags\PYZus{}list} 
+    \PY{k}{if} \PY{n}{tag} \PY{o+ow}{not} \PY{o+ow}{in} \PY{n}{domain\PYZus{}stop\PYZus{}words}
+\PY{p}{]}
+\PY{n}{tag\PYZus{}frequencies} \PY{o}{=} \PY{n}{Counter}\PY{p}{(}\PY{n}{filtered\PYZus{}all\PYZus{}tags}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} (过滤后) Top 10 Most Frequent Keywords \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{tag\PYZus{}frequencies}\PY{o}{.}\PY{n}{most\PYZus{}common}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+--- (过滤后) Top 10 Most Frequent Keywords ---
+[('Gene Expression Regulation, Neoplastic', 381), ('COVID-19', 309), ('SARS-
+CoV-2', 248), ('Algorithms', 214), ('Cell Proliferation/genetics', 208),
+('Reactive Oxygen Species/metabolism', 196), ('Biomarkers', 184), ('Tumor
+Microenvironment', 173), ('*MicroRNAs/genetics/metabolism', 171),
+('Polymorphism, Single Nucleotide', 169)]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{61}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 构建过滤后的加权图 (用于边和连接) \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n}{G\PYZus{}keywords\PYZus{}weighted} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{Graph}\PY{p}{(}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{tags\PYZus{}list} \PY{o+ow}{in} \PY{n}{all\PYZus{}tags\PYZus{}lists}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} 对每一篇论文的关键词列表进行过滤}
+    \PY{n}{filtered\PYZus{}tags} \PY{o}{=} \PY{p}{[}\PY{n}{tag} \PY{k}{for} \PY{n}{tag} \PY{o+ow}{in} \PY{n}{tags\PYZus{}list} \PY{k}{if} \PY{n}{tag} \PY{o+ow}{not} \PY{o+ow}{in} \PY{n}{domain\PYZus{}stop\PYZus{}words}\PY{p}{]}
+    
+    \PY{c+c1}{\PYZsh{} 确保过滤后仍有两个以上关键词才能形成共现}
+    \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{filtered\PYZus{}tags}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mi}{1}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} 排序以确保 (\PYZsq{}A\PYZsq{}, \PYZsq{}B\PYZsq{}) 和 (\PYZsq{}B\PYZsq{}, \PYZsq{}A\PYZsq{}) 被视为一样}
+        \PY{n}{sorted\PYZus{}tags} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{filtered\PYZus{}tags}\PY{p}{)}
+        \PY{n}{edges} \PY{o}{=} \PY{n}{combinations}\PY{p}{(}\PY{n}{sorted\PYZus{}tags}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} 直接增加边的权重}
+        \PY{k}{for} \PY{n}{edge} \PY{o+ow}{in} \PY{n}{edges}\PY{p}{:}
+            \PY{k}{if} \PY{n}{G\PYZus{}keywords\PYZus{}weighted}\PY{o}{.}\PY{n}{has\PYZus{}edge}\PY{p}{(}\PY{o}{*}\PY{n}{edge}\PY{p}{)}\PY{p}{:}
+                \PY{n}{G\PYZus{}keywords\PYZus{}weighted}\PY{p}{[}\PY{n}{edge}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{[}\PY{n}{edge}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            \PY{k}{else}\PY{p}{:}
+                \PY{n}{G\PYZus{}keywords\PYZus{}weighted}\PY{o}{.}\PY{n}{add\PYZus{}edge}\PY{p}{(}\PY{n}{edge}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{edge}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} (过滤后) 关键词共现网络构建完成 \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{网络中共有 }\PY{l+s+si}{\PYZob{}}\PY{n}{G\PYZus{}keywords\PYZus{}weighted}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ 个独特的关键词}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{它们之间构成了 }\PY{l+s+si}{\PYZob{}}\PY{n}{G\PYZus{}keywords\PYZus{}weighted}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}edges}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ 条共现关系}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+--- (过滤后) 关键词共现网络构建完成 ---
+网络中共有 86371 个独特的关键词
+它们之间构成了 769870 条共现关系
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{62}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} =====================================================================}
+\PY{c+c1}{\PYZsh{} 步骤 3 \PYZam{} 4: 聚焦并可视化核心知识图谱}
+\PY{c+c1}{\PYZsh{} =====================================================================}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 设定你的过滤阈值 (现在可以对真正的热点词进行筛选) \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n}{TOP\PYZus{}N\PYZus{}KEYWORDS} \PY{o}{=} \PY{l+m+mi}{50} 
+\PY{n}{KEYWORD\PYZus{}WEIGHT\PYZus{}THRESHOLD} \PY{o}{=} \PY{l+m+mi}{5} \PY{c+c1}{\PYZsh{} 由于总词数变少，你可能需要适当降低这个阈值}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 开始过滤 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} 这里的 tag\PYZus{}frequencies 已经是过滤后的了，所以选出的都是有意义的核心词}
+\PY{k}{if} \PY{n}{tag\PYZus{}frequencies}\PY{p}{:} \PY{c+c1}{\PYZsh{} 确保不为空}
+    \PY{n}{core\PYZus{}keywords} \PY{o}{=} \PY{p}{[}\PY{n}{tag} \PY{k}{for} \PY{n}{tag}\PY{p}{,} \PY{n}{freq} \PY{o+ow}{in} \PY{n}{tag\PYZus{}frequencies}\PY{o}{.}\PY{n}{most\PYZus{}common}\PY{p}{(}\PY{n}{TOP\PYZus{}N\PYZus{}KEYWORDS}\PY{p}{)}\PY{p}{]}
+\PY{k}{else}\PY{p}{:}
+    \PY{n}{core\PYZus{}keywords} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+
+\PY{n}{G\PYZus{}keywords\PYZus{}core} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{Graph}\PY{p}{(}\PY{p}{)}
+\PY{k}{if} \PY{n}{core\PYZus{}keywords}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} 从已经过滤的 G\PYZus{}keywords\PYZus{}weighted 中提取子图}
+    \PY{n}{G\PYZus{}keywords\PYZus{}core} \PY{o}{=} \PY{n}{G\PYZus{}keywords\PYZus{}weighted}\PY{o}{.}\PY{n}{subgraph}\PY{p}{(}\PY{n}{core\PYZus{}keywords}\PY{p}{)}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} 再根据边的权重做第二次过滤}
+    \PY{n}{edges\PYZus{}to\PYZus{}remove} \PY{o}{=} \PY{p}{[}
+        \PY{p}{(}\PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{)} \PY{k}{for} \PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{d} \PY{o+ow}{in} \PY{n}{G\PYZus{}keywords\PYZus{}core}\PY{o}{.}\PY{n}{edges}\PY{p}{(}\PY{n}{data}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)} 
+        \PY{k}{if} \PY{n}{d}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{n}{KEYWORD\PYZus{}WEIGHT\PYZus{}THRESHOLD}
+    \PY{p}{]}
+    \PY{n}{G\PYZus{}keywords\PYZus{}core}\PY{o}{.}\PY{n}{remove\PYZus{}edges\PYZus{}from}\PY{p}{(}\PY{n}{edges\PYZus{}to\PYZus{}remove}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} 移除孤立节点}
+    \PY{n}{G\PYZus{}keywords\PYZus{}core}\PY{o}{.}\PY{n}{remove\PYZus{}nodes\PYZus{}from}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{isolates}\PY{p}{(}\PY{n}{G\PYZus{}keywords\PYZus{}core}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} 过滤后的核心知识图谱 \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{核心网络包含 }\PY{l+s+si}{\PYZob{}}\PY{n}{G\PYZus{}keywords\PYZus{}core}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ 个核心概念}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{它们之间的强连接关系有 }\PY{l+s+si}{\PYZob{}}\PY{n}{G\PYZus{}keywords\PYZus{}core}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}edges}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ 条}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 可视化 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{k}{if} \PY{n}{G\PYZus{}keywords\PYZus{}core}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}nodes}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{25}\PY{p}{,} \PY{l+m+mi}{25}\PY{p}{)}\PY{p}{,}\PY{n}{dpi} \PY{o}{=} \PY{l+m+mi}{200}\PY{p}{)}
+    \PY{n}{pos} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{spring\PYZus{}layout}\PY{p}{(}\PY{n}{G\PYZus{}keywords\PYZus{}core}\PY{p}{,} 
+                           \PY{n}{k}\PY{o}{=}\PY{l+m+mf}{2.0}\PY{p}{,} 
+                           \PY{n}{iterations}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} 
+                           \PY{n}{seed}\PY{o}{=}\PY{l+m+mi}{42}\PY{p}{)} \PY{c+c1}{\PYZsh{} k值可以调大一点让节点更分散}
+
+    \PY{c+c1}{\PYZsh{} 节点大小：基于过滤后的总频率}
+    \PY{n}{node\PYZus{}sizes} \PY{o}{=} \PY{p}{[}\PY{n}{tag\PYZus{}frequencies}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{node}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)} \PY{o}{*} \PY{l+m+mf}{0.5} \PY{o}{+} \PY{l+m+mi}{100} \PY{k}{for} \PY{n}{node} \PY{o+ow}{in} \PY{n}{G\PYZus{}keywords\PYZus{}core}\PY{o}{.}\PY{n}{nodes}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+
+    \PY{c+c1}{\PYZsh{} 边的宽度}
+    \PY{n}{edge\PYZus{}widths} \PY{o}{=} \PY{p}{[}\PY{n}{d}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{*} \PY{l+m+mf}{0.08} \PY{k}{for} \PY{p}{(}\PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{d}\PY{p}{)} \PY{o+ow}{in} \PY{n}{G\PYZus{}keywords\PYZus{}core}\PY{o}{.}\PY{n}{edges}\PY{p}{(}\PY{n}{data}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{]}
+
+    \PY{n}{nx}\PY{o}{.}\PY{n}{draw\PYZus{}networkx\PYZus{}nodes}\PY{p}{(}\PY{n}{G\PYZus{}keywords\PYZus{}core}\PY{p}{,} \PY{n}{pos}\PY{p}{,} \PY{n}{node\PYZus{}size}\PY{o}{=}\PY{n}{node\PYZus{}sizes}\PY{p}{,} \PY{n}{node\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}f39c12}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.9}\PY{p}{)}
+    \PY{n}{nx}\PY{o}{.}\PY{n}{draw\PYZus{}networkx\PYZus{}edges}\PY{p}{(}\PY{n}{G\PYZus{}keywords\PYZus{}core}\PY{p}{,} \PY{n}{pos}\PY{p}{,} \PY{n}{width}\PY{o}{=}\PY{n}{edge\PYZus{}widths}\PY{p}{,} \PY{n}{edge\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}7f8c8d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.7}\PY{p}{)}
+    \PY{n}{nx}\PY{o}{.}\PY{n}{draw\PYZus{}networkx\PYZus{}labels}\PY{p}{(}\PY{n}{G\PYZus{}keywords\PYZus{}core}\PY{p}{,} 
+                            \PY{n}{pos}\PY{p}{,} 
+                            \PY{n}{font\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{15}\PY{p}{,} 
+                            \PY{n}{font\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}2c3e50}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                            \PY{n}{font\PYZus{}weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bold}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Core Thematic Network (Filtered, Top }\PY{l+s+si}{\PYZob{}}\PY{n}{TOP\PYZus{}N\PYZus{}KEYWORDS}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ Keywords, Min. }\PY{l+s+si}{\PYZob{}}\PY{n}{KEYWORD\PYZus{}WEIGHT\PYZus{}THRESHOLD}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ Co\PYZhy{}occurrences)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{25}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\PY{k}{else}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{在当前阈值下，没有形成任何连接。请尝试调整 TOP\PYZus{}N\PYZus{}KEYWORDS 和 KEYWORD\PYZus{}WEIGHT\PYZus{}THRESHOLD。}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+--- 过滤后的核心知识图谱 ---
+核心网络包含 47 个核心概念
+它们之间的强连接关系有 133 条
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{data_process_files/data_process_63_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{63}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} 核心知识图谱的共现数据 (Co\PYZhy{}occurrence Data) \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 创建一个列表来存储共现关系的详细信息}
+\PY{n}{cooccurrence\PYZus{}data} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{c+c1}{\PYZsh{} 遍历图中的所有边及其属性}
+\PY{k}{for} \PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{data} \PY{o+ow}{in} \PY{n}{G\PYZus{}keywords\PYZus{}core}\PY{o}{.}\PY{n}{edges}\PY{p}{(}\PY{n}{data}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{:}
+    \PY{n}{cooccurrence\PYZus{}data}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{[}\PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 将列表转换为Pandas DataFrame以便更好地展示}
+\PY{k}{if} \PY{n}{cooccurrence\PYZus{}data}\PY{p}{:}
+    \PY{n}{df\PYZus{}cooccurrence} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{cooccurrence\PYZus{}data}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Keyword 1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Keyword 2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Co\PYZhy{}occurrence Weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} 按照共现权重降序排序，更容易看到最强的关系}
+    \PY{n}{df\PYZus{}cooccurrence} \PY{o}{=} \PY{n}{df\PYZus{}cooccurrence}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{by}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Co\PYZhy{}occurrence Weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} 打印DataFrame，可以根据需要调整显示行数}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{df\PYZus{}cooccurrence}\PY{o}{.}\PY{n}{to\PYZus{}string}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} to\PYZus{}string() 避免在控制台输出时被截断}
+\PY{k}{else}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{当前过滤条件下，核心知识图谱中没有共现边。}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+--- 核心知识图谱的共现数据 (Co-occurrence Data) ---
+                                    Keyword 1
+Keyword 2  Co-occurrence Weight
+33                                   COVID-19
+SARS-CoV-2                   122
+120    Gene Expression Regulation, Neoplastic               Cell
+Proliferation/genetics                   103
+115                  *Air Pollutants/analysis               Particulate
+Matter/analysis                    87
+118                    Cell Movement/genetics               Cell
+Proliferation/genetics                    85
+125                                SARS-CoV-2
+*COVID-19                    78
+27                   Environmental Monitoring                  *Air
+Pollutants/analysis                    70
+119                    Cell Movement/genetics    Gene Expression Regulation,
+Neoplastic                    61
+124             Genome-Wide Association Study           Polymorphism, Single
+Nucleotide                    58
+87             *MicroRNAs/genetics/metabolism               Cell
+Proliferation/genetics                    55
+98          Genetic Predisposition to Disease           Polymorphism, Single
+Nucleotide                    55
+34                                   COVID-19
+*COVID-19                    53
+52                              Cell Movement    Gene Expression Regulation,
+Neoplastic                    50
+30                   Environmental Monitoring               Particulate
+Matter/analysis                    49
+110                 Gene Expression Profiling    Gene Expression Regulation,
+Neoplastic                    43
+88             *MicroRNAs/genetics/metabolism    Gene Expression Regulation,
+Neoplastic                    42
+60                    Mendelian randomization             Genome-Wide
+Association Study                    42
+5                          Apoptosis/genetics               Cell
+Proliferation/genetics                    40
+10                          *Machine Learning                          Machine
+learning                    39
+78                     Tumor Microenvironment
+Immunotherapy                    34
+59                    Mendelian randomization           Polymorphism, Single
+Nucleotide                    31
+86             *MicroRNAs/genetics/metabolism                    Cell
+Movement/genetics                    30
+40                              Transcriptome                 Gene Expression
+Profiling                    30
+99          Genetic Predisposition to Disease             Genome-Wide
+Association Study                    29
+65                           Oxidative stress                          Oxidative
+Stress                    28
+84                                 Algorithms                            *Deep
+Learning                    26
+76                  Neural Networks, Computer
+Algorithms                    25
+83                                 Algorithms                *Neural Networks,
+Computer                    25
+18                   Hepatocellular carcinoma    Gene Expression Regulation,
+Neoplastic                    25
+0                      Apoptosis/drug effects          Signal Transduction/drug
+effects                    23
+6                          Apoptosis/genetics    Gene Expression Regulation,
+Neoplastic                    23
+8                          Apoptosis/genetics
+*MicroRNAs/genetics/metabolism                    23
+93                        *MicroRNAs/genetics               Cell
+Proliferation/genetics                    23
+2                      Apoptosis/drug effects           Cell Proliferation/drug
+effects                    22
+94                        *MicroRNAs/genetics    Gene Expression Regulation,
+Neoplastic                    22
+23                           Machine Learning                          Machine
+learning                    22
+24                           Machine Learning
+Algorithms                    22
+74         Reactive Oxygen Species/metabolism                          Oxidative
+Stress                    21
+121    Gene Expression Regulation, Neoplastic                Biomarkers,
+Tumor/genetics                    21
+61                    Mendelian randomization         Genetic Predisposition to
+Disease                    20
+64                           Oxidative stress        Reactive Oxygen
+Species/metabolism                    20
+1                      Apoptosis/drug effects        Reactive Oxygen
+Species/metabolism                    18
+4                          Apoptosis/genetics                    Cell
+Movement/genetics                    18
+67           Signal Transduction/drug effects           Cell Proliferation/drug
+effects                    17
+112                 Gene Expression Profiling                Biomarkers,
+Tumor/genetics                    16
+16                   Hepatocellular carcinoma               Cell
+Proliferation/genetics                    16
+77                  Neural Networks, Computer                            *Deep
+Learning                    14
+9                           *Machine Learning
+Algorithms                    14
+92                        *MicroRNAs/genetics                    Cell
+Movement/genetics                    13
+107  Proto-Oncogene Proteins c-akt/metabolism    Gene Expression Regulation,
+Neoplastic                    13
+80                     Tumor Microenvironment    Gene Expression Regulation,
+Neoplastic                    12
+71         Reactive Oxygen Species/metabolism
+Cytokines/metabolism                    12
+106  Proto-Oncogene Proteins c-akt/metabolism               Cell
+Proliferation/genetics                    12
+91                                *Algorithms                *Neural Networks,
+Computer                    12
+55                           Machine learning
+Algorithms                    12
+15                   Hepatocellular carcinoma                    Cell
+Movement/genetics                    12
+62                                   Mutation                Biomarkers,
+Tumor/genetics                    12
+41                              Transcriptome    Gene Expression Regulation,
+Neoplastic                    11
+69           Signal Transduction/drug effects  Proto-Oncogene Proteins
+c-akt/metabolism                    11
+47               Molecular Docking Simulation
+SARS-CoV-2                    11
+108  Proto-Oncogene Proteins c-akt/metabolism                          Oxidative
+Stress                    10
+116                  *Air Pollutants/analysis
+SARS-CoV-2                    10
+123    Gene Expression Regulation, Neoplastic
+Immunotherapy                     9
+70           Signal Transduction/drug effects        Reactive Oxygen
+Species/metabolism                     9
+28                   Environmental Monitoring
+*COVID-19                     9
+50                              Cell Movement
+*MicroRNAs/genetics/metabolism                     9
+31                   Environmental Monitoring
+SARS-CoV-2                     9
+21                           Machine Learning
+*Algorithms                     9
+7                          Apoptosis/genetics
+*MicroRNAs/genetics                     9
+12                          *Machine Learning
+*Algorithms                     9
+114                  *Air Pollutants/analysis
+*COVID-19                     9
+109                *Neural Networks, Computer                            *Deep
+Learning                     9
+101                             Breast cancer    Gene Expression Regulation,
+Neoplastic                     9
+3                      Apoptosis/drug effects
+Autophagy                     8
+105                                Depression             Genome-Wide
+Association Study                     8
+131                                 *COVID-19               Particulate
+Matter/analysis                     8
+128                             Immunotherapy                Biomarkers,
+Tumor/genetics                     8
+126                                SARS-CoV-2               Particulate
+Matter/analysis                     8
+113                 Gene Expression Profiling             Genome-Wide
+Association Study                     8
+58                           Machine learning                 Gene Expression
+Profiling                     8
+48               Molecular Docking Simulation
+*COVID-19                     8
+38                                   COVID-19
+Depression                     8
+43                              Transcriptome                Biomarkers,
+Tumor/genetics                     7
+72         Reactive Oxygen Species/metabolism           Cell Proliferation/drug
+effects                     7
+129                             Immunotherapy
+Biomarkers                     7
+117                  *Air Pollutants/analysis
+Biomarkers                     7
+51                              Cell Movement  Proto-Oncogene Proteins
+c-akt/metabolism                     7
+56                           Machine learning
+*Algorithms                     7
+53                              Cell Movement                    Tumor
+Microenvironment                     7
+46               Molecular Docking Simulation           Cell Proliferation/drug
+effects                     7
+13                          *Machine Learning                *Neural Networks,
+Computer                     7
+20                   Hepatocellular carcinoma
+Immunotherapy                     7
+25                           Machine Learning                 Neural Networks,
+Computer                     7
+26                           Machine Learning
+Biomarkers                     6
+35                                   COVID-19              Molecular Docking
+Simulation                     6
+29                   Environmental Monitoring
+COVID-19                     6
+36                                   COVID-19                  *Air
+Pollutants/analysis                     6
+14                          *Machine Learning                 Gene Expression
+Profiling                     6
+57                           Machine learning    Gene Expression Regulation,
+Neoplastic                     6
+42                              Transcriptome             Genome-Wide
+Association Study                     6
+49               Molecular Docking Simulation          Signal Transduction/drug
+effects                     6
+66                           Oxidative stress          Signal Transduction/drug
+effects                     6
+122    Gene Expression Regulation, Neoplastic                             breast
+cancer                     6
+132                                Biomarkers               Particulate
+Matter/analysis                     6
+103                             Breast cancer               Cell
+Proliferation/genetics                     6
+102                             Breast cancer                Biomarkers,
+Tumor/genetics                     6
+96                        *MicroRNAs/genetics
+Biomarkers                     6
+85             *MicroRNAs/genetics/metabolism  Proto-Oncogene Proteins
+c-akt/metabolism                     6
+97                        *MicroRNAs/genetics                Biomarkers,
+Tumor/genetics                     6
+75         Reactive Oxygen Species/metabolism                    Tumor
+Microenvironment                     6
+81                     Tumor Microenvironment                             Breast
+cancer                     6
+79                     Tumor Microenvironment
+Biomarkers                     6
+22                           Machine Learning                *Neural Networks,
+Computer                     6
+11                          *Machine Learning    Gene Expression Regulation,
+Neoplastic                     5
+19                   Hepatocellular carcinoma                    Tumor
+Microenvironment                     5
+17                   Hepatocellular carcinoma                             Cell
+Movement                     5
+37                                   COVID-19               Particulate
+Matter/analysis                     5
+32                   Environmental Monitoring
+Biomarkers                     5
+68           Signal Transduction/drug effects
+Autophagy                     5
+63                                   Mutation    Gene Expression Regulation,
+Neoplastic                     5
+54                              Cell Movement               Cell
+Proliferation/genetics                     5
+45                              Transcriptome                          Machine
+learning                     5
+44                              Transcriptome
+Mutation                     5
+39                                   COVID-19                   Mendelian
+randomization                     5
+73         Reactive Oxygen Species/metabolism
+Immunotherapy                     5
+82                     Tumor Microenvironment               Cell
+Proliferation/genetics                     5
+100         Genetic Predisposition to Disease                 Gene Expression
+Profiling                     5
+95                        *MicroRNAs/genetics                 Gene Expression
+Profiling                     5
+90                       Cytokines/metabolism                          Oxidative
+Stress                     5
+89             *MicroRNAs/genetics/metabolism                 Gene Expression
+Profiling                     5
+111                 Gene Expression Profiling           Polymorphism, Single
+Nucleotide                     5
+104                             Breast cancer                          Neoplasm
+Staging                     5
+127                             Immunotherapy                             breast
+cancer                     5
+130                Biomarkers, Tumor/genetics
+Biomarkers                     5
+    \end{Verbatim}
+
+    \subsection{导出VOSviewer可用的格式}\label{ux5bfcux51favosviewerux53efux7528ux7684ux683cux5f0f}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} 配置参数 (请在此处修改) \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n}{KEYWORD\PYZus{}COLUMN} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{manual\PYZus{}tags}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{SEPARATOR} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{;}\PY{l+s+s1}{\PYZsq{}} 
+
+\PY{c+c1}{\PYZsh{} 1. 定义领域专属停用词}
+\PY{c+c1}{\PYZsh{} 转换为小写、去除前后空格，并存入set中以加快查找速度}
+\PY{n}{domain\PYZus{}stop\PYZus{}words\PYZus{}set} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{word}\PY{o}{.}\PY{n}{strip}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)} \PY{k}{for} \PY{n}{word} \PY{o+ow}{in} \PY{n}{domain\PYZus{}stop\PYZus{}words} \PY{k}{if} \PY{n}{word}\PY{o}{.}\PY{n}{strip}\PY{p}{(}\PY{p}{)}\PY{p}{\PYZcb{}}
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+
+\PY{c+c1}{\PYZsh{} 2. 调整过滤阈值}
+\PY{n}{MIN\PYZus{}FREQUENCY} \PY{o}{=} \PY{l+m+mi}{10}
+\PY{n}{MIN\PYZus{}WEIGHT} \PY{o}{=} \PY{l+m+mi}{5}
+\PY{c+c1}{\PYZsh{} =========================================================================}
+
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} 步骤1：提取和处理关键词 (已集成停用词) \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{加载并清洗了 }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{domain\PYZus{}stop\PYZus{}words\PYZus{}set}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ 个领域停用词。}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{n}{KEYWORD\PYZus{}COLUMN}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{n}{KEYWORD\PYZus{}COLUMN}\PY{p}{]}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{str}\PY{p}{)}
+
+\PY{n}{clean\PYZus{}tags\PYZus{}list} \PY{o}{=} \PY{n}{df\PYZus{}clean}\PY{p}{[}\PY{n}{KEYWORD\PYZus{}COLUMN}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}
+    \PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{p}{[}
+        \PY{n}{tag}\PY{o}{.}\PY{n}{strip}\PY{p}{(}\PY{p}{)} \PY{k}{for} \PY{n}{tag} \PY{o+ow}{in} \PY{n}{x}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{n}{SEPARATOR}\PY{p}{)}
+        \PY{k}{if} \PY{n}{tag}\PY{o}{.}\PY{n}{strip}\PY{p}{(}\PY{p}{)} \PY{o+ow}{and} \PY{n}{tag}\PY{o}{.}\PY{n}{strip}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)} \PY{o+ow}{not} \PY{o+ow}{in} \PY{n}{domain\PYZus{}stop\PYZus{}words\PYZus{}set}
+    \PY{p}{]}
+\PY{p}{)}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{all\PYZus{}tags\PYZus{}flat} \PY{o}{=} \PY{p}{[}\PY{n}{tag} \PY{k}{for} \PY{n}{sublist} \PY{o+ow}{in} \PY{n}{clean\PYZus{}tags\PYZus{}list} \PY{k}{for} \PY{n}{tag} \PY{o+ow}{in} \PY{n}{sublist}\PY{p}{]}
+\PY{n}{tag\PYZus{}frequencies} \PY{o}{=} \PY{n}{Counter}\PY{p}{(}\PY{n}{all\PYZus{}tags\PYZus{}flat}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{去除停用词后，数据集中共有 }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{tag\PYZus{}frequencies}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ 个独立关键词。}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} 步骤2：构建完整的共现网络 \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{G\PYZus{}full} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{Graph}\PY{p}{(}\PY{p}{)}
+\PY{k}{for} \PY{n}{tags\PYZus{}in\PYZus{}doc} \PY{o+ow}{in} \PY{n}{clean\PYZus{}tags\PYZus{}list}\PY{p}{:}
+    \PY{k}{for} \PY{n}{pair} \PY{o+ow}{in} \PY{n}{combinations}\PY{p}{(}\PY{n+nb}{sorted}\PY{p}{(}\PY{n+nb}{set}\PY{p}{(}\PY{n}{tags\PYZus{}in\PYZus{}doc}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{:}
+        \PY{k}{if} \PY{n}{G\PYZus{}full}\PY{o}{.}\PY{n}{has\PYZus{}edge}\PY{p}{(}\PY{n}{pair}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{pair}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+            \PY{n}{G\PYZus{}full}\PY{p}{[}\PY{n}{pair}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{[}\PY{n}{pair}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{G\PYZus{}full}\PY{o}{.}\PY{n}{add\PYZus{}edge}\PY{p}{(}\PY{n}{pair}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{pair}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{原始网络包含 }\PY{l+s+si}{\PYZob{}}\PY{n}{G\PYZus{}full}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ 个节点和 }\PY{l+s+si}{\PYZob{}}\PY{n}{G\PYZus{}full}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}edges}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ 条边。}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} 步骤3：进行核心过滤，为网络“瘦身” \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{frequent\PYZus{}keywords} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{kw} \PY{k}{for} \PY{n}{kw}\PY{p}{,} \PY{n}{freq} \PY{o+ow}{in} \PY{n}{tag\PYZus{}frequencies}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)} \PY{k}{if} \PY{n}{freq} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{MIN\PYZus{}FREQUENCY}\PY{p}{\PYZcb{}}
+\PY{n}{G\PYZus{}filtered} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{Graph}\PY{p}{(}\PY{p}{)}
+\PY{k}{for} \PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{data} \PY{o+ow}{in} \PY{n}{G\PYZus{}full}\PY{o}{.}\PY{n}{edges}\PY{p}{(}\PY{n}{data}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{:}
+    \PY{k}{if} \PY{n}{u} \PY{o+ow}{in} \PY{n}{frequent\PYZus{}keywords} \PY{o+ow}{and} \PY{n}{v} \PY{o+ow}{in} \PY{n}{frequent\PYZus{}keywords} \PY{o+ow}{and} \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{MIN\PYZus{}WEIGHT}\PY{p}{:}
+        \PY{n}{G\PYZus{}filtered}\PY{o}{.}\PY{n}{add\PYZus{}edge}\PY{p}{(}\PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{isolated\PYZus{}nodes} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{isolates}\PY{p}{(}\PY{n}{G\PYZus{}filtered}\PY{p}{)}\PY{p}{)}
+\PY{n}{G\PYZus{}filtered}\PY{o}{.}\PY{n}{remove\PYZus{}nodes\PYZus{}from}\PY{p}{(}\PY{n}{isolated\PYZus{}nodes}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{网络过滤完成！}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{final\PYZus{}nodes} \PY{o}{=} \PY{n}{G\PYZus{}filtered}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}nodes}\PY{p}{(}\PY{p}{)}
+\PY{n}{final\PYZus{}edges} \PY{o}{=} \PY{n}{G\PYZus{}filtered}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}edges}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{过滤后的网络包含 }\PY{l+s+si}{\PYZob{}}\PY{n}{final\PYZus{}nodes}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ 个节点和 }\PY{l+s+si}{\PYZob{}}\PY{n}{final\PYZus{}edges}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ 条边。}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} 步骤4：导出过滤后的网络为 VOSviewer 文件 \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{G\PYZus{}keywords\PYZus{}weighted} \PY{o}{=} \PY{n}{G\PYZus{}filtered}
+\PY{n}{all\PYZus{}keywords} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{G\PYZus{}keywords\PYZus{}weighted}\PY{o}{.}\PY{n}{nodes}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{k}{if} \PY{o+ow}{not} \PY{n}{all\PYZus{}keywords}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{!! 警告：过滤后网络为空 !! 请降低过滤阈值。}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{else}\PY{p}{:}
+    \PY{n}{keyword\PYZus{}to\PYZus{}id} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{keyword}\PY{p}{:} \PY{n}{i} \PY{o}{+} \PY{l+m+mi}{1} \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{keyword} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{all\PYZus{}keywords}\PY{p}{)}\PY{p}{\PYZcb{}}
+
+    \PY{c+c1}{\PYZsh{} 创建 Map File (需要表头)}
+    \PY{n}{map\PYZus{}filename} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{vosviewer\PYZus{}map\PYZus{}filtered.txt}\PY{l+s+s1}{\PYZsq{}}
+    \PY{k}{with} \PY{n+nb}{open}\PY{p}{(}\PY{n}{map\PYZus{}filename}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{encoding}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{utf\PYZhy{}8}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{as} \PY{n}{f}\PY{p}{:}
+        \PY{n}{f}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{id}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s2}{label}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s2}{weight}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{k}{for} \PY{n}{keyword} \PY{o+ow}{in} \PY{n}{all\PYZus{}keywords}\PY{p}{:}
+            \PY{n}{node\PYZus{}id} \PY{o}{=} \PY{n}{keyword\PYZus{}to\PYZus{}id}\PY{p}{[}\PY{n}{keyword}\PY{p}{]}
+            \PY{n}{label} \PY{o}{=} \PY{n}{keyword}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{n}{weight} \PY{o}{=} \PY{n}{tag\PYZus{}frequencies}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{keyword}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+            \PY{n}{f}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{node\PYZus{}id}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+si}{\PYZob{}}\PY{n}{label}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+si}{\PYZob{}}\PY{n}{weight}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{成功创建 Map File: }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{map\PYZus{}filename}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} 创建 Network File (不能有表头)}
+    \PY{n}{network\PYZus{}filename} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{vosviewer\PYZus{}network\PYZus{}filtered.txt}\PY{l+s+s1}{\PYZsq{}}
+    \PY{k}{with} \PY{n+nb}{open}\PY{p}{(}\PY{n}{network\PYZus{}filename}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{encoding}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{utf\PYZhy{}8}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{as} \PY{n}{f}\PY{p}{:}
+        \PY{k}{for} \PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{data} \PY{o+ow}{in} \PY{n}{G\PYZus{}keywords\PYZus{}weighted}\PY{o}{.}\PY{n}{edges}\PY{p}{(}\PY{n}{data}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{:}
+            \PY{n}{start\PYZus{}id} \PY{o}{=} \PY{n}{keyword\PYZus{}to\PYZus{}id}\PY{p}{[}\PY{n}{u}\PY{p}{]}
+            \PY{n}{end\PYZus{}id} \PY{o}{=} \PY{n}{keyword\PYZus{}to\PYZus{}id}\PY{p}{[}\PY{n}{v}\PY{p}{]}
+            \PY{n}{link\PYZus{}strength} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+            \PY{n}{f}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{start\PYZus{}id}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+si}{\PYZob{}}\PY{n}{end\PYZus{}id}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+si}{\PYZob{}}\PY{n}{link\PYZus{}strength}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{成功创建 Network File: }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{network\PYZus{}filename}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{🎉 全部完成！停用词问题已修复，文件格式正确。}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+--- 步骤1：提取和处理关键词 (已集成停用词) ---
+加载并清洗了 74 个领域停用词。
+去除停用词后，数据集中共有 79858 个独立关键词。
+
+--- 步骤2：构建完整的共现网络 ---
+原始网络包含 79849 个节点和 743075 条边。
+
+--- 步骤3：进行核心过滤，为网络“瘦身” ---
+网络过滤完成！
+过滤后的网络包含 1124 个节点和 2163 条边。
+
+--- 步骤4：导出过滤后的网络为 VOSviewer 文件 ---
+成功创建 Map File: 'vosviewer\_map\_filtered.txt'
+成功创建 Network File: 'vosviewer\_network\_filtered.txt'
+
+🎉 全部完成！停用词问题已修复，文件格式正确。
+    \end{Verbatim}
+
+    \subsection{下一步}\label{ux4e0bux4e00ux6b65}
+
+\begin{itemize}
+\tightlist
+\item
+  进入\texttt{VOSviewer}进行数据可视化分析
+\end{itemize}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
