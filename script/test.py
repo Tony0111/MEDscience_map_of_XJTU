@@ -329,3 +329,35 @@ else:
     
     print("\n🎉 全部完成！停用词问题已修复，文件格式正确。")
 
+
+
+# =====================================================================
+'''python
+import pandas as pd
+import networkx as nx
+from collections import Counter
+from itertools import combinations
+
+
+from collections import Counter
+from itertools import combinations
+import networkx as nx
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+import networkx as nx
+from itertools import combinations 
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+import pandas as pd
+import glob
+import os
+'''

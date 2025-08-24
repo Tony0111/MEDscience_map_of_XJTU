@@ -1,0 +1,1125 @@
+id	label	weight
+1	*ferroptosis/drug effects	23
+2	ferroptosis	142
+3	*reactive oxygen species/metabolism	44
+4	mitochondrial dysfunction	35
+5	slc7a11	14
+6	hepatocellular carcinoma	212
+7	tumor microenvironment	290
+8	*ferroptosis	59
+9	lipid peroxidation	10
+10	iron/metabolism	22
+11	reactive oxygen species/metabolism	196
+12	autophagy	174
+13	pancreatic cancer	66
+14	reactive oxygen species	126
+15	gpx4	10
+16	*ferroptosis/genetics	24
+17	gene expression regulation, neoplastic	381
+18	osteoarthritis	155
+19	nrf2	55
+20	*nf-e2-related factor 2/metabolism/genetics	11
+21	mitochondria/metabolism	35
+22	oxidative stress/drug effects	61
+23	apoptosis/drug effects	102
+24	antioxidants/pharmacology	28
+25	hypertension	140
+26	signal transduction/drug effects	126
+27	*signal transduction/drug effects	62
+28	*nf-e2-related factor 2/metabolism	21
+29	*apoptosis/drug effects	51
+30	cytokines/metabolism	117
+31	*depression/epidemiology	25
+32	depression	188
+33	depressive symptoms	33
+34	cognition	57
+35	alzheimers disease	24
+36	cognitive function	28
+37	anxiety	112
+38	parkinson’s disease	29
+39	social support	46
+40	stress	23
+41	lateral habenula	11
+42	covid-19	311
+43	neuroinflammation	48
+44	prenatal stress	17
+45	*gene-environment interaction	14
+46	genome-wide association study	162
+47	united kingdom/epidemiology	41
+48	*genome-wide association study	75
+49	depression/epidemiology	17
+50	mental health	73
+51	sars-cov-2	253
+52	epidemiology	77
+53	global burden of disease	53
+54	public health	55
+55	mortality	157
+56	*global burden of disease	26
+57	global health	49
+58	quality-adjusted life years	58
+59	disability-adjusted life years	48
+60	death	19
+61	*global burden of disease/trends	21
+62	global burden of disease/trends	14
+63	hospital mortality	34
+64	biomarkers/blood	91
+65	intensive care unit	26
+66	intensive care units	51
+67	cardiovascular disease	66
+68	diabetes	61
+69	cohort study	44
+70	cause of death	31
+71	hip fracture	24
+72	*map kinase signaling system	14
+73	gastric cancer	129
+74	cell proliferation/drug effects	106
+75	autophagy/drug effects	10
+76	tor serine-threonine kinases/metabolism	29
+77	phosphatidylinositol 3-kinases/metabolism	73
+78	*autophagy/drug effects	21
+79	adolescents	35
+80	children	86
+81	inflammation/metabolism	86
+82	psoriasis	54
+83	glycogen synthase kinase 3 beta/metabolism	25
+84	inflammation mediators/metabolism	20
+85	rats, wistar	20
+86	raw 264.7 cells	43
+87	macrophages/metabolism	49
+88	tumor necrosis factor-alpha/metabolism	44
+89	mast cells	50
+90	nf-kappa b/metabolism	84
+91	microglia	45
+92	mast cell	31
+93	hypothalamic paraventricular nucleus	21
+94	*mice, inbred c57bl	48
+95	macrophage	61
+96	myocytes, cardiac/metabolism	33
+97	*nf-kappa b/metabolism	46
+98	proto-oncogene proteins c-akt/metabolism	98
+99	keratinocyte	11
+100	keratinocytes	10
+101	*psoriasis/drug therapy	12
+102	mendelian randomization	180
+103	gene expression regulation, neoplastic/genetics	33
+104	*micrornas/genetics/metabolism	171
+105	cell movement/genetics	111
+106	cell proliferation/genetics	208
+107	databases, genetic	47
+108	biomarkers, tumor/genetics	89
+109	neoplasm invasiveness	61
+110	*carcinoma, hepatocellular/genetics	17
+111	*liver neoplasms/genetics	25
+112	cell movement	130
+113	hep g2 cells	38
+114	survival	57
+115	gene expression profiling	149
+116	metastasis	70
+117	proliferation	130
+118	biomarkers	228
+119	hypoxia	74
+120	tumor progression	12
+121	contrast-enhanced ultrasound	11
+122	recurrence	50
+123	pd-l1	30
+124	sorafenib	14
+125	*rna, long noncoding/genetics/metabolism	81
+126	*carcinoma, hepatocellular/pathology	35
+127	*liver neoplasms/pathology	38
+128	cell cycle	65
+129	hepatitis b virus	42
+130	*micrornas/genetics	128
+131	*carcinoma, hepatocellular/drug therapy	18
+132	*liver neoplasms/drug therapy	20
+133	diagnosis	115
+134	biomarker	116
+135	bioinformatics	76
+136	immune infiltration	63
+137	cancer	109
+138	lung adenocarcinoma	57
+139	*biomarkers, tumor/genetics	28
+140	extracellular vesicles	34
+141	mesenchymal stem cells	31
+142	*extracellular vesicles/metabolism	23
+143	*gastrointestinal microbiome	83
+144	gut microbiome	22
+145	rna, ribosomal, 16s	10
+146	gut microbiota	144
+147	probiotics	18
+148	rna, ribosomal, 16s/genetics	40
+149	feces/microbiology	30
+150	bacteria	32
+151	*microbiota	37
+152	microbiota	30
+153	severity of illness index	85
+154	emt	46
+155	neoplasm metastasis	42
+156	breast cancer	224
+157	*cell proliferation	41
+158	*gene expression regulation, neoplastic	75
+159	cell proliferation/physiology	29
+160	up-regulation	84
+161	transcription factors/*metabolism	15
+162	ubiquitination	52
+163	yap	22
+164	yap-signaling proteins	25
+165	cell survival/drug effects	60
+166	cell movement/drug effects	34
+167	mitophagy	41
+168	drug screening assays, antitumor	25
+169	*nanoparticles/chemistry	75
+170	fibrosis	92
+171	atrial fibrillation	66
+172	gene expression regulation, neoplastic/drug effects	29
+173	molecular docking simulation	130
+174	network pharmacology	68
+175	*cell proliferation/drug effects	33
+176	*oxidative stress/drug effects	40
+177	*proto-oncogene proteins c-akt/metabolism	36
+178	lipopolysaccharides	36
+179	disease susceptibility	16
+180	biomarkers/metabolism	48
+181	proteomics	87
+182	*air pollutants/analysis	141
+183	particulate matter/analysis	102
+184	*diabetes mellitus	49
+185	environmental monitoring	97
+186	colorectal cancer	115
+187	mass spectrometry	28
+188	disease management	13
+189	blood pressure	104
+190	*hypertension/epidemiology	25
+191	gene polymorphism	16
+192	rats, inbred dahl	15
+193	sodium chloride, dietary/adverse effects	14
+194	*hypertension	30
+195	rats, inbred shr	22
+196	rats, inbred wky	19
+197	blood pressure/physiology	27
+198	phosphatidylinositol 3-kinases	34
+199	proto-oncogene proteins c-akt	17
+200	targeted therapy	40
+201	precision medicine	24
+202	cirrhosis	29
+203	sarcopenia	32
+204	*exosomes/metabolism	37
+205	*stomach neoplasms/pathology	22
+206	exosomes	53
+207	microrna	35
+208	rna, circular/genetics	24
+209	apoptosis/genetics	95
+210	gene regulatory networks	48
+211	*mesenchymal stem cells/metabolism	37
+212	down-regulation	65
+213	*rna, circular/genetics/metabolism	16
+214	rna, messenger/genetics	34
+215	mirna	17
+216	epithelial-mesenchymal transition/genetics	30
+217	hcc	28
+218	nomograms	81
+219	transcriptome	104
+220	nomogram	132
+221	prediction model	63
+222	seer program	38
+223	neoplasm staging	90
+224	tcga	21
+225	pan-cancer	34
+226	*nanoparticles	86
+227	cancer therapy	42
+228	cancer-associated fibroblasts	13
+229	combination therapy	20
+230	*neoplasms/therapy	27
+231	*neoplasms/drug therapy	58
+232	chemodynamic therapy	17
+233	hydrogen peroxide	49
+234	*neoplasms	54
+235	ovarian cancer	67
+236	tumor-associated macrophages	13
+237	cd8-positive t-lymphocytes	25
+238	*lung neoplasms/drug therapy	29
+239	hydrogen-ion concentration	52
+240	metabolism	39
+241	tumor microenvironment/genetics	47
+242	cytokines	63
+243	prognostic model	32
+244	extracellular matrix/metabolism	33
+245	*tumor microenvironment	26
+246	osteosarcoma	45
+247	immunotherapy/methods	29
+248	polymers	58
+249	photothermal therapy	45
+250	glutathione	12
+251	*neoplasms/pathology	15
+252	*tumor microenvironment/immunology	23
+253	coronavirus	25
+254	*covid-19	133
+255	ace2	15
+256	mendelian randomization analysis	95
+257	*sars-cov-2	31
+258	*covid-19 drug treatment	19
+259	communicable disease control	17
+260	*pandemics	17
+261	attitude	21
+262	knowledge	33
+263	vaccination	37
+264	*covid-19/epidemiology	57
+265	pandemics	83
+266	pandemic	17
+267	disease outbreaks	21
+268	*covid-19/epidemiology/prevention & control	18
+269	vaccine	20
+270	pakistan	57
+271	pandemics/prevention & control	17
+272	covid-19 vaccines	13
+273	*covid-19/diagnosis	14
+274	*covid-19/prevention & control	23
+275	coronavirus disease 2019	18
+276	sensitivity and specificity	71
+277	covid-19 pandemic	16
+278	hek293 cells	77
+279	*air pollution/analysis	40
+280	*social media	21
+281	protein binding	51
+282	angiotensin-converting enzyme 2	11
+283	magnetic resonance imaging	177
+284	tomography, x-ray computed	68
+285	diffusion tensor imaging	27
+286	white matter	12
+287	brain/diagnostic imaging	34
+288	functional connectivity	30
+289	mild traumatic brain injury	16
+290	brain mapping	24
+291	brain	62
+292	fmri	29
+293	neuroimaging	19
+294	magnetic resonance imaging/methods	77
+295	*magnetic resonance imaging/methods	33
+296	computed tomography	25
+297	deep learning	173
+298	imaging, three-dimensional	14
+299	*deep learning	93
+300	forensic anthropology	16
+301	computational biology/methods	40
+302	*rna, long noncoding/genetics	52
+303	gene expression profiling/methods	28
+304	genomics	39
+305	immune microenvironment	39
+306	mutation	144
+307	*tumor microenvironment/immunology/genetics	12
+308	rna, long noncoding/*genetics	19
+309	micrornas/*genetics	29
+310	survival rate	66
+311	*nomograms	66
+312	tumor cells, cultured	21
+313	disease-free survival	33
+314	kaplan-meier estimate	65
+315	treatment	76
+316	artificial intelligence	91
+317	consensus	51
+318	diagnosis, differential	34
+319	beta catenin/genetics/metabolism	12
+320	*stomach neoplasms/genetics	14
+321	glycolysis	49
+322	gene knockdown techniques	43
+323	cost of illness	16
+324	cost-benefit analysis	41
+325	markov chains	10
+326	*mendelian randomization analysis	74
+327	polymorphism, single nucleotide	169
+328	polymorphism, single nucleotide/genetics	44
+329	gwas	28
+330	genetic predisposition to disease	122
+331	*polymorphism, single nucleotide	65
+332	*genetic predisposition to disease	50
+333	causality	35
+334	*quantitative trait loci	10
+335	alzheimer’s disease	52
+336	ankylosing spondylitis	18
+337	rheumatoid arthritis	94
+338	inflammatory bowel disease	35
+339	bone mineral density	40
+340	causal relationship	16
+341	osteoporosis	107
+342	causal association	12
+343	single nucleotide polymorphisms	20
+344	smoking	25
+345	*gastrointestinal microbiome/genetics	35
+346	*mendelian randomization analysis/methods	10
+347	quantitative trait loci	16
+348	alleles	43
+349	asian people/genetics	40
+350	case-control study	26
+351	haplotypes	19
+352	susceptibility	44
+353	single nucleotide polymorphism	19
+354	polymorphism	50
+355	dna methylation	97
+356	united kingdom	20
+357	linkage disequilibrium	10
+358	gene frequency	35
+359	*transcriptome	44
+360	lung cancer	78
+361	east asian people/genetics	15
+362	novel allele	11
+363	sequence analysis, dna	25
+364	thyroid cancer	33
+365	peptides	25
+366	peptide	21
+367	age factors	61
+368	sex factors	50
+369	age	20
+370	blood glucose	36
+371	*diabetes mellitus, type 2/drug therapy	17
+372	insulin	20
+373	fasting	10
+374	glucose	47
+375	insulin resistance	75
+376	predictive value of tests	70
+377	leukocyte count	17
+378	triglycerides/blood	16
+379	cholesterol, hdl/blood	10
+380	ultrasonography	57
+381	ultrasound	33
+382	contrast media	28
+383	*elasticity imaging techniques/methods	14
+384	breast neoplasms	12
+385	risk stratification	26
+386	nsclc	40
+387	migration	66
+388	invasion	33
+389	cell differentiation	123
+390	*lung neoplasms/pathology	45
+391	computational biology	62
+392	protein interaction maps/genetics	17
+393	sequence analysis, rna	30
+394	protein interaction maps	16
+395	immune cell infiltration	21
+396	gene expression regulation	49
+397	*gene regulatory networks	21
+398	mitochondria	71
+399	rna, messenger/genetics/metabolism	33
+400	transcriptome/genetics	19
+401	*transcriptome/genetics	21
+402	bioinformatics analysis	39
+403	cluster analysis	46
+404	*single-cell analysis	19
+405	*computational biology/methods	27
+406	*machine learning	89
+407	single-cell analysis	21
+408	methylation	61
+409	rna, long noncoding/genetics/*metabolism	17
+410	tumorigenesis	23
+411	wnt signaling pathway/genetics	11
+412	micrornas/genetics/*metabolism	35
+413	akt	45
+414	glioma	64
+415	survival analysis	59
+416	wnt signaling pathway	35
+417	*epigenesis, genetic	22
+418	n6-methyladenosine	19
+419	biomarkers, tumor/genetics/metabolism	22
+420	esophageal squamous cell carcinoma	25
+421	radioresistance	14
+422	*micrornas/metabolism	37
+423	neoplasm invasiveness/genetics	13
+424	*cell proliferation/genetics	11
+425	epithelial-mesenchymal transition	60
+426	yap1	14
+427	cell transformation, neoplastic/genetics	11
+428	triple-negative breast cancer	21
+429	drug resistance, neoplasm/genetics	31
+430	lncrna	27
+431	carcinogenesis	38
+432	transcription factors/genetics/metabolism	20
+433	progression	19
+434	immunohistochemistry	35
+435	hela cells	36
+436	*up-regulation	13
+437	signature	15
+438	hct116 cells	14
+439	promoter regions, genetic	34
+440	*signal transduction	65
+441	transcription factors/genetics	21
+442	oncogenes	12
+443	signal transduction/genetics	33
+444	carcinogenesis/genetics	31
+445	rna, messenger	34
+446	up-regulation/genetics	15
+447	clear cell renal cell carcinoma	14
+448	tumor microenvironment/immunology	20
+449	*carcinoma, non-small-cell lung/pathology	22
+450	glioblastoma	32
+451	*colorectal neoplasms/pathology	14
+452	non-small cell lung cancer	65
+453	*apoptosis/genetics	14
+454	c-myc	17
+455	*disease progression	31
+456	cervical cancer	65
+457	*mice, nude	11
+458	*drug resistance, neoplasm/genetics	15
+459	*lung neoplasms/genetics	19
+460	wilms tumor	13
+461	polymorphism, genetic	20
+462	genetic susceptibility	11
+463	high-throughput nucleotide sequencing	35
+464	metagenomics	21
+465	australia	13
+466	dementia	24
+467	endothelial cells	41
+468	angiogenesis	90
+469	lung	47
+470	lung function	11
+471	*phosphatidylinositol 3-kinases/metabolism	15
+472	wnt	15
+473	gsk-3β	11
+474	β-catenin	23
+475	cell transformation, neoplastic	21
+476	beta catenin/metabolism	30
+477	cell hypoxia	16
+478	risk assessment/methods	27
+479	seer	47
+480	intrahepatic cholangiocarcinoma	19
+481	bile ducts, intrahepatic/pathology	16
+482	overall survival	44
+483	cancer-specific survival	11
+484	radiomics	35
+485	logistic models	54
+486	transcription factors/metabolism	25
+487	cell survival/genetics	11
+488	transfection	47
+489	atherosclerosis	71
+490	*hydrogels	27
+491	hydrogel	53
+492	tissue scaffolds	13
+493	*nanofibers	17
+494	*carcinoma, hepatocellular	14
+495	*liver neoplasms	15
+496	*liver transplantation/adverse effects	11
+497	liver transplantation	23
+498	type 2 diabetes mellitus	62
+499	*diabetes mellitus, type 2	22
+500	macrophages	71
+501	osteogenesis	89
+502	mice, transgenic	50
+503	amyloid beta-peptides/metabolism	19
+504	inflammation/genetics	10
+505	computer simulation	79
+506	*algorithms	92
+507	algorithms	214
+508	*models, biological	29
+509	*epithelial-mesenchymal transition	20
+510	epithelial cells/metabolism	23
+511	proto-oncogene proteins c-akt/*metabolism	16
+512	beta catenin/*metabolism	12
+513	*cell movement	16
+514	*apoptosis	35
+515	pi3k/akt signaling pathway	13
+516	bleeding	13
+517	administration, oral	51
+518	*dna methylation	24
+519	epigenesis, genetic	28
+520	metabolomics	64
+521	transcriptomics	24
+522	*triglycerides/blood	14
+523	all-cause mortality	47
+524	metabolic syndrome	43
+525	obesity	134
+526	single-cell rna sequencing	33
+527	cell apoptosis	13
+528	*oxidative stress	28
+529	nf-e2-related factor 2/metabolism	23
+530	drug liberation	35
+531	ros	33
+532	nanoparticles/chemistry	44
+533	*photochemotherapy	27
+534	superoxide dismutase/metabolism	14
+535	drug carriers/chemistry	29
+536	antioxidants/metabolism	14
+537	photodynamic therapy	41
+538	*mitochondria/metabolism/drug effects	11
+539	*photochemotherapy/methods	38
+540	progression-free survival	36
+541	double-blind method	81
+542	randomized controlled trials as topic	81
+543	multicenter studies as topic	22
+544	network meta-analysis	25
+545	spinal cord injury	67
+546	nf-κb	49
+547	nlr family, pyrin domain-containing 3 protein/metabolism	22
+548	prostate cancer	55
+549	*prostatic neoplasms/pathology	10
+550	dopamine/metabolism	16
+551	serotonin/metabolism	14
+552	anxiety disorders	13
+553	parkinsons disease	22
+554	biological specimen banks	34
+555	dose-response relationship, drug	50
+556	molecular structure	78
+557	particle size	55
+558	surface properties	70
+559	wound healing	108
+560	antibacterial	43
+561	tissue engineering	57
+562	bandages	24
+563	hemostasis	24
+564	*methicillin-resistant staphylococcus aureus	18
+565	anti-bacterial agents/pharmacology	61
+566	self-healing	13
+567	wound dressing	12
+568	*hydrogels/chemistry/pharmacology	27
+569	*anti-bacterial agents/pharmacology/chemistry	30
+570	*wound healing/drug effects	36
+571	escherichia coli/drug effects	16
+572	oncology	17
+573	resveratrol	18
+574	sirt1	27
+575	gemcitabine	14
+576	genetics	17
+577	*arthritis, rheumatoid/genetics	16
+578	causal	10
+579	genetic	15
+580	genetic predisposition to disease/genetics	15
+581	stroke	72
+582	*stroke/epidemiology	10
+583	*stroke	18
+584	ischemic stroke	51
+585	*ischemic stroke	20
+586	elasticity	20
+587	viscosity	20
+588	tumor immune microenvironment	30
+589	*breast neoplasms/genetics	13
+590	*breast neoplasms/pathology	27
+591	chemotherapy	56
+592	*breast neoplasms	11
+593	mcf-7 cells	22
+594	neoadjuvant chemotherapy	19
+595	*breast neoplasms/drug therapy	13
+596	datasets as topic	13
+597	propensity score	48
+598	spectrometry, fluorescence	13
+599	thermodynamics	24
+600	bone marrow mesenchymal stem cells	14
+601	*exosomes/genetics/metabolism	11
+602	*insulin resistance	46
+603	diet, high-fat/adverse effects	39
+604	blood glucose/metabolism	19
+605	obesity/epidemiology	24
+606	socioeconomic factors	67
+607	overweight	21
+608	*obesity/epidemiology	11
+609	body weight	23
+610	*pediatric obesity/epidemiology	14
+611	obesity/metabolism	14
+612	weight gain	11
+613	*white matter/diagnostic imaging	11
+614	endothelial cells/metabolism	31
+615	human umbilical vein endothelial cells	24
+616	vascular endothelial growth factor a/metabolism	17
+617	*osteogenesis/drug effects	19
+618	stat3 transcription factor/metabolism	24
+619	stat3	26
+620	dysbiosis	16
+621	diet	59
+622	fecal microbiota transplantation	11
+623	*gastrointestinal microbiome/physiology	15
+624	gastrointestinal microbiome/drug effects	11
+625	*gastrointestinal microbiome/drug effects	21
+626	*income	11
+627	social class	15
+628	sepsis	70
+629	acute kidney injury	32
+630	myocardium/metabolism	15
+631	erbb receptors/genetics	17
+632	*carcinoma, non-small-cell lung/drug therapy	16
+633	drug resistance, neoplasm	32
+634	next-generation sequencing	17
+635	*carcinoma, non-small-cell lung/drug therapy/genetics/pathology	15
+636	*lung neoplasms/drug therapy/genetics/pathology	20
+637	erbb receptors	12
+638	*neoplasms/genetics	14
+639	tomography, x-ray computed/methods	25
+640	radiographic image interpretation, computer-assisted/methods	11
+641	anastomosis, surgical	18
+642	magnetic phenomena	53
+643	magnamosis	11
+644	magnetic surgery	17
+645	magnetic compression technique	12
+646	dogs	32
+647	adsorption	77
+648	magnetics	16
+649	rabbits	72
+650	rabbit	10
+651	databases, factual	68
+652	bayes theorem	79
+653	pharmacovigilance	23
+654	faers	25
+655	microbial sensitivity tests	44
+656	biofilms	25
+657	escherichia coli	23
+658	*anti-infective agents/pharmacology	10
+659	staphylococcus aureus	22
+660	staphylococcus aureus/drug effects	19
+661	bone regeneration	49
+662	*mesenchymal stem cells	22
+663	*osteogenesis	30
+664	stem cells	37
+665	rna, messenger/metabolism	43
+666	porosity	58
+667	materials testing	45
+668	limit of detection	76
+669	cell movement/physiology	16
+670	mrgprx2	38
+671	cell membrane/metabolism	18
+672	cell membrane chromatography	28
+673	neoplasm grading	15
+674	lymph node excision	11
+675	lymph nodes/pathology	17
+676	*hepatitis b, chronic/drug therapy	11
+677	*antiviral agents/therapeutic use	12
+678	hepatitis b virus/genetics	11
+679	dna, viral	10
+680	safety	56
+681	efficacy	45
+682	effectiveness	13
+683	models, biological	32
+684	biomechanical phenomena	77
+685	copper	29
+686	cuproptosis	19
+687	*nf-e2-related factor 2/genetics/metabolism	11
+688	high glucose	11
+689	kelch-like ech-associated protein 1/metabolism	11
+690	nf-e2-related factor 2/genetics/metabolism	13
+691	tibia/surgery	14
+692	pyroptosis	55
+693	inflammasomes/metabolism	20
+694	*pyroptosis	12
+695	nlrp3	28
+696	*osteoarthritis/metabolism	15
+697	chondrocytes	44
+698	total knee arthroplasty	36
+699	cartilage	33
+700	kashin–beck disease	18
+701	chondrocyte	23
+702	extracellular matrix	49
+703	kashin-beck disease	46
+704	chondrocytes/metabolism	29
+705	*cartilage, articular/metabolism	16
+706	interleukin-1beta/metabolism	25
+707	drug delivery	47
+708	structure-activity relationship	36
+709	cell differentiation/drug effects	23
+710	*antineoplastic agents/pharmacology	27
+711	dna repair	13
+712	dna damage	21
+713	b7-h1 antigen/metabolism	17
+714	*kidney transplantation/adverse effects	12
+715	kidney transplantation	10
+716	nanoparticles	43
+717	drug delivery systems	52
+718	collagen/metabolism	17
+719	*colorectal neoplasms/genetics	13
+720	mice, knockout, apoe	10
+721	*lung neoplasms	24
+722	*carcinoma, non-small-cell lung	12
+723	*epidemics	13
+724	genetic association studies	11
+725	*soil pollutants/analysis	12
+726	biodegradation, environmental	16
+727	soil	18
+728	air pollution	66
+729	*air pollution, indoor/analysis	18
+730	*volatile organic compounds/analysis	15
+731	seasons	53
+732	*air pollutants/analysis/toxicity	22
+733	beijing	15
+734	particulate matter/analysis/toxicity	17
+735	*polycyclic aromatic hydrocarbons/analysis	21
+736	pm(2.5)	26
+737	*particulate matter/analysis	17
+738	aerosols/analysis	31
+739	vehicle emissions/analysis	11
+740	dust/analysis	10
+741	*ozone/analysis	13
+742	coal/analysis	13
+743	biomass	46
+744	carbon/analysis	15
+745	source apportionment	12
+746	coal	21
+747	osteogenesis/genetics	13
+748	cell differentiation/genetics	22
+749	*osteogenesis/genetics	17
+750	periodontal ligament	12
+751	*nlr family, pyrin domain-containing 3 protein/metabolism	13
+752	postmenopausal osteoporosis	11
+753	lipid metabolism	46
+754	liver/metabolism	38
+755	interleukin-6/metabolism	25
+756	hepatectomy	25
+757	*liver neoplasms/surgery	12
+758	*mental health	24
+759	lymphocytes	21
+760	neutrophils	21
+761	cost-effectiveness	15
+762	cost-effectiveness analysis	13
+763	marital status	10
+764	surgery	38
+765	nlrp3 inflammasome	19
+766	oxidative stress/*drug effects	13
+767	apoptosis/*drug effects	22
+768	uk biobank	23
+769	blood-brain barrier	19
+770	calcium/metabolism	36
+771	t-2 toxin	32
+772	*arthroplasty, replacement, hip	14
+773	*hip prosthesis	10
+774	asthma	38
+775	airway remodeling	12
+776	*neural networks, computer	94
+777	*artificial intelligence	38
+778	printing, three-dimensional	35
+779	benzophenones	15
+780	3d printing	41
+781	lymph node metastasis	14
+782	lymphatic metastasis/pathology	13
+783	ultrasonography/methods	21
+784	phantoms, imaging	28
+785	*disease models, animal	43
+786	animal model	23
+787	*bone regeneration/drug effects	10
+788	anti-inflammation	20
+789	odds ratio	26
+790	base sequence	22
+791	*alleles	11
+792	sequence alignment	12
+793	sequence analysis, dna/methods	17
+794	third‐generation sequencing	11
+795	spinal cord/metabolism	18
+796	spinal cord	14
+797	*air pollution/adverse effects/analysis	28
+798	*air pollutants/adverse effects/analysis	18
+799	maternal exposure/adverse effects	10
+800	particulate matter/adverse effects/analysis	10
+801	fine particulate matter	15
+802	nitrogen dioxide	14
+803	particulate matter	31
+804	*air pollution/adverse effects	12
+805	*air pollution	14
+806	pm2.5	21
+807	heating	13
+808	environmental exposure/analysis	19
+809	environmental monitoring/methods	28
+810	radiation dosage	16
+811	image processing, computer-assisted	17
+812	image processing, computer-assisted/methods	40
+813	neural networks, computer	89
+814	*tomography, x-ray computed/methods	41
+815	operative time	36
+816	*robotic surgical procedures/methods	16
+817	anti-inflammatory	21
+818	antioxidant	30
+819	endoplasmic reticulum stress	57
+820	er stress	21
+821	finite element analysis	78
+822	range of motion, articular	29
+823	additive manufacturing	32
+824	stress, mechanical	33
+825	finite element	12
+826	*fractures, bone/surgery	16
+827	fracture fixation, internal/methods	25
+828	hippocampus	44
+829	neuroinflammatory diseases	16
+830	birth weight	31
+831	gestational age	19
+832	gestational diabetes mellitus	29
+833	chronic disease	50
+834	multimorbidity	20
+835	*tissue scaffolds/chemistry	22
+836	electrohydrodynamic printing	16
+837	collagen	29
+838	support vector machine	32
+839	*brain-computer interfaces	30
+840	electroencephalography/methods	20
+841	photic stimulation	10
+842	*software	24
+843	software	27
+844	motor imagery (mi)	12
+845	signal processing, computer-assisted	14
+846	*image processing, computer-assisted/methods	36
+847	*electroencephalography/methods	15
+848	genomics/methods	15
+849	signal-to-noise ratio	17
+850	*imaging, three-dimensional/methods	18
+851	*critical illness	10
+852	exosome	33
+853	metabolome	15
+854	*metabolomics/methods	12
+855	*antineoplastic agents/pharmacology/therapeutic use	29
+856	*spinal fusion	18
+857	*pedicle screws	17
+858	nerve tissue proteins/metabolism	11
+859	receptors, g-protein-coupled/metabolism	23
+860	*cell differentiation	21
+861	osteogenic differentiation	32
+862	ammonia	12
+863	nitrogen	26
+864	microglia/metabolism	21
+865	*microglia/metabolism	12
+866	sleep deprivation	12
+867	diabetic kidney disease	15
+868	neuroprotection	31
+869	*neuroprotective agents/pharmacology	12
+870	gene therapy	23
+871	gene transfer techniques	10
+872	m6a	21
+873	hepatoblastoma	12
+874	neuroblastoma	12
+875	oxides	15
+876	chitosan	14
+877	*chitosan/chemistry	15
+878	blood pressure/drug effects	13
+879	dyslipidemia	20
+880	differentiation	22
+881	*induced pluripotent stem cells	11
+882	osteoblasts	22
+883	osteoblasts/metabolism	14
+884	tissue scaffolds/chemistry	16
+885	bioactive materials	19
+886	electronics	19
+887	*wearable electronic devices	37
+888	neural network	22
+889	ligands	44
+890	*activities of daily living	10
+891	activities of daily living	14
+892	chromatography, liquid	27
+893	proteome	14
+894	*proteomics/methods	15
+895	bone density	33
+896	*osteoporosis/genetics	12
+897	osteoclast	19
+898	*arthroplasty, replacement, knee	17
+899	*bone density	15
+900	knee osteoarthritis	23
+901	psychometrics	18
+902	*diabetes mellitus/epidemiology	12
+903	stroke volume	14
+904	ventricular function, left	10
+905	*cancer-associated fibroblasts/metabolism/pathology	10
+906	ampk	22
+907	metformin	29
+908	resilience	25
+909	*resilience, psychological	11
+910	propensity score matching	19
+911	risk	37
+912	lymphocyte count	11
+913	tibet/epidemiology	11
+914	medicine, chinese traditional	19
+915	molecular docking	41
+916	*molecular docking simulation	20
+917	binding sites	24
+918	molecular dynamics simulation	57
+919	cell degranulation	33
+920	*hydrogels/chemistry	52
+921	promoter regions, genetic/genetics	14
+922	triglycerides	26
+923	cholesterol, ldl	15
+924	anti-inflammatory agents/pharmacology	27
+925	*knee prosthesis	11
+926	knee joint/surgery	16
+927	biomechanics	21
+928	mechanical phenomena	13
+929	*gene expression profiling/methods	13
+930	eeg	27
+931	electroencephalography	39
+932	oxidation-reduction	88
+933	*water pollutants, chemical/analysis	32
+934	electrodes	41
+935	gold/chemistry	25
+936	*metal nanoparticles/chemistry	28
+937	silver/chemistry	13
+938	*biosensing techniques/methods	47
+939	metal nanoparticles/chemistry	16
+940	kinetics	43
+941	spectroscopy, fourier transform infrared	33
+942	water	57
+943	*pharmacovigilance	13
+944	metagenome	14
+945	phylogeny	37
+946	*genetics, population	18
+947	self-management	13
+948	*self-management	13
+949	bmi	14
+950	*body mass index	29
+951	*water pollutants, chemical/chemistry	15
+952	osseointegration	26
+953	schizophrenia	48
+954	inflammation/drug therapy	35
+955	classification	26
+956	pelvis	15
+957	convolutional neural network	22
+958	transfer learning	19
+959	mettl3	18
+960	autoimmune diseases	10
+961	autoimmunity	17
+962	nanomedicine	40
+963	tensile strength	14
+964	adverse events	17
+965	disproportionality analysis	14
+966	polyethylene glycols	19
+967	discriminant analysis	14
+968	principal component analysis	35
+969	least-squares analysis	16
+970	spectroscopy, fourier transform infrared/methods	11
+971	glucose/metabolism	33
+972	oxygen/metabolism	15
+973	models, molecular	19
+974	*transients and migrants	14
+975	rural population	41
+976	health services	12
+977	urban population	22
+978	tandem mass spectrometry	34
+979	genetics, population	17
+980	*ethnicity/genetics	11
+981	forensic genetics	19
+982	microsatellite repeats	11
+983	population genetics	13
+984	magnetic compression anastomosis	12
+985	magnetosurgery	10
+986	cancer immunotherapy	23
+987	reliability	20
+988	validity	16
+989	systematic review	65
+990	exercise	58
+991	mechanical properties	46
+992	zinc	21
+993	selenium	25
+994	*environmental monitoring	13
+995	*carcinoma, non-small-cell lung/drug therapy/genetics	14
+996	*lung neoplasms/drug therapy/genetics	16
+997	*bibliometrics	16
+998	citespace	25
+999	bibliometrics	35
+1000	bibliometric analysis	24
+1001	biosensor	21
+1002	*biosensing techniques	46
+1003	pregnant women	16
+1004	pregnant people	17
+1005	insulin/metabolism	15
+1006	skeletal muscle	12
+1007	triglyceride-glucose index	13
+1008	polymers/chemistry	34
+1009	*prenatal exposure delayed effects	16
+1010	photosensitizing agents/therapeutic use	14
+1011	health knowledge, attitudes, practice	25
+1012	*health knowledge, attitudes, practice	25
+1013	attitudes	11
+1014	economic development	35
+1015	renewable energy	23
+1016	carbon dioxide/analysis	23
+1017	*carbon dioxide/analysis	11
+1018	efficiency	19
+1019	*hip fractures/surgery	23
+1020	social media	13
+1021	electrochemical techniques/methods	14
+1022	students	35
+1023	schools	15
+1024	universities	37
+1025	hydrogen evolution reaction	21
+1026	electrocatalysis	42
+1027	bipolar disorder	12
+1028	hydrogen peroxide/chemistry	12
+1029	*graphite/chemistry	17
+1030	immunoassay/methods	11
+1031	*metal-organic frameworks/chemistry	18
+1032	*gold/chemistry	21
+1033	*silver/chemistry	14
+1034	*spectrum analysis, raman/methods	19
+1035	*exercise	16
+1036	physical activity	36
+1037	qualitative research	32
+1038	qualitative study	11
+1039	hydrogen	33
+1040	solar energy	13
+1041	*metal nanoparticles	30
+1042	gold	24
+1043	silver	12
+1044	expert consensus	11
+1045	*cell movement/drug effects	12
+1046	biosensors	14
+1047	electrochemical techniques	17
+1048	*economic development	34
+1049	co2 emissions	12
+1050	investments	12
+1051	environmental pollution/analysis	12
+1052	carbon dioxide	26
+1053	electrospinning	18
+1054	*t-2 toxin/toxicity	24
+1055	lumbar vertebrae/diagnostic imaging/surgery	13
+1056	*printing, three-dimensional	21
+1057	graphene	41
+1058	*graphite	12
+1059	pakistan/epidemiology	25
+1060	internationality	11
+1061	chromatography, liquid/methods	12
+1062	*tandem mass spectrometry/methods	16
+1063	methamphetamine	22
+1064	*methamphetamine/pharmacology	14
+1065	stability	44
+1066	organic solar cells	46
+1067	solar cells	12
+1068	perovskite solar cells	26
+1069	power conversion efficiency	20
+1070	*polymers/chemistry	34
+1071	developing countries	13
+1072	indoles/chemistry	11
+1073	pyrolysis	16
+1074	oxidopamine/toxicity	10
+1075	chromatography, high pressure liquid/methods	23
+1076	ecosystem	21
+1077	climate change	39
+1078	*alginates/chemistry	10
+1079	photocatalysis	54
+1080	hydrogen evolution	11
+1081	water splitting	16
+1082	sensors	18
+1083	electrical and electronic engineering	15
+1084	anaerobic digestion	11
+1085	anaerobiosis	20
+1086	perovskite	20
+1087	bioreactors	16
+1088	sewage	14
+1089	*wastewater	12
+1090	national health and nutrition examination survey	18
+1091	*nutrition surveys	35
+1092	sleep duration	23
+1093	*sleep/physiology	13
+1094	oxygen evolution reaction	25
+1095	cold atmospheric plasma	28
+1096	*plasma gases/pharmacology	10
+1097	*stat3 transcription factor/metabolism	13
+1098	genetic polymorphism	10
+1099	forensic sciences	10
+1100	homosexuality, male	16
+1101	*sexual and gender minorities	11
+1102	*helicobacter pylori	10
+1103	helicobacter pylori	15
+1104	brown carbon	10
+1105	phototherapy	19
+1106	phototherapy/methods	12
+1107	*photothermal therapy/methods	12
+1108	nutritional status	25
+1109	malnutrition	12
+1110	age estimation	10
+1111	cardiovascular mortality	11
+1112	college students	17
+1113	high-throughput nucleotide sequencing/methods	14
+1114	vosviewer	12
+1115	cholesterol, hdl	11
+1116	*inflammasomes/metabolism	12
+1117	*aptamers, nucleotide/chemistry	10
+1118	spectrum analysis, raman/methods	12
+1119	surface-enhanced raman scattering	12
+1120	mechanomedicine	11
+1121	mechanical microenvironment	12
+1122	*single-cell analysis/methods	22
+1123	sequence analysis, rna/methods	10
+1124	*immunotherapy/methods	36

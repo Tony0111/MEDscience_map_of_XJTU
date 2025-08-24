@@ -8,7 +8,7 @@
 # 1. Ignore all contents of the /data/ directory.
 # This prevents large data files (nbib, csv, etc.) from being uploaded.
 # The leading slash ensures it only matches the 'data' folder in the root directory.
-/data/
+# /data/
 
 # 2. Ignore the Obsidian vault configuration folder.
 # This is CRITICAL to prevent leaking API keys or other secrets.
