@@ -116,12 +116,12 @@ cd MEDscience_map_of_XJTU
 
 **首次运行：创建并配置虚拟环境**: 在项目根目录下（也就是包含 `environment_map_of_XJTU_MED.yml` 的目录），**双击运行 `start_project.bat` 文件。**
     
-    - **如果这是您第一次运行此脚本**： 脚本会检测到虚拟环境 `map_of_XJTU_MED` 不存在，并自动提示您如何创建它。 它会提示您需要手动执行以下命令来创建环境并安装所有依赖：
+- **如果这是您第一次运行此脚本**： 脚本会检测到虚拟环境 `map_of_XJTU_MED` 不存在，并自动提示您如何创建它。 它会提示您需要手动执行以下命令来创建环境并安装所有依赖：
 - 
         ```bash
         conda env create -f environment_map_of_XJTU_MED.yml
         ```
-        请在 `Anaconda Prompt` 或已配置好 `conda` 的命令行窗口中执行该命令。这个过程可能需要几分钟，请耐心等待。 **创建成功后，请再次双击运行 `start_project.bat` 文件。
+	请在 `Anaconda Prompt` 或已配置好 `conda` 的命令行窗口中执行该命令。这个过程可能需要几分钟，请耐心等待。 **创建成功后，请再次双击运行 `start_project.bat` 文件。
         
     - **如果环境已存在**： 脚本会直接激活虚拟环境。
         
