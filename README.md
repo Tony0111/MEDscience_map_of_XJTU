@@ -1,6 +1,6 @@
 # 西安交通大学医学部科研产出分析项目
 
-![[License-MIT-yellow.svg]]    ![[python-3.12+-blue.svg]]
+![](License-MIT-yellow.svg)    ![](python-3.12+-blue.svg)
 
 ## 目录
 
